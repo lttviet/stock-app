@@ -14,6 +14,9 @@ const Layout: NextPage = ({ children }) => {
             </Typography>
           </Link>
 
+          <Link href="/profile" passHref>
+            <Button color="inherit" variant='outlined'>Profile</Button>
+          </Link>
           <Link href="/login" passHref>
             <Button color="inherit" variant='outlined'>Login</Button>
           </Link>
