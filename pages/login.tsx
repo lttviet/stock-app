@@ -1,4 +1,4 @@
-import { TextField, Typography, Grid, Button } from '@material-ui/core'
+import { Button, Grid, TextField, Typography } from '@material-ui/core'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
@@ -20,16 +20,16 @@ const Login: NextPage<LoginProps> = ({ loggedIn }: LoginProps) => {
         justifyContent="center"
         alignItems="stretch"
       >
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <Typography variant="h4">Sign in</Typography>
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <TextField
             label="Email"
             fullWidth
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={12} sm={6} lg={4}>
           <Button variant="contained" color="primary">
             Email link
           </Button>

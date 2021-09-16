@@ -1,9 +1,9 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
-import { useEffect } from 'react'
-import { createTheme, CssBaseline } from '@material-ui/core'
+import { createTheme, CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
+import type { AppProps } from 'next/app';
+import { useEffect } from 'react';
 import Layout from '../components/layout';
+import '../styles/globals.css';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
