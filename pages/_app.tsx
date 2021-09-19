@@ -1,5 +1,5 @@
-import { createTheme, CssBaseline } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, CssBaseline } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import Layout from '../components/layout';
@@ -16,7 +16,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   const theme = createTheme({
     palette: {
-      type: 'dark'
+      mode: 'dark'
     }
   })
 

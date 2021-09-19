@@ -1,4 +1,4 @@
-import { Button, Grid, TextField, Typography } from '@material-ui/core'
+import { Button, Grid, TextField, Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 

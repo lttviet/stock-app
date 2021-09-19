@@ -1,4 +1,4 @@
-import { AppBar, Button, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import styles from '../styles/Layout.module.css'
@@ -6,7 +6,7 @@ import styles from '../styles/Layout.module.css'
 const Layout: NextPage = ({ children }) => {
   return (
     <>
-      <AppBar position="static" color="transparent">
+      <AppBar position="static">
         <Toolbar>
           <Link href="/" passHref>
             <Typography variant="h6" className={styles.title}>
