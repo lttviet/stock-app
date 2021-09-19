@@ -1,4 +1,5 @@
-import { AppBar, Button, Toolbar, Typography } from '@mui/material'
+import ShowChartIcon from '@mui/icons-material/ShowChart'
+import { AppBar, Button, Grid, Toolbar } from '@mui/material'
 import type { NextPage } from 'next'
 import Link from 'next/link'
 import styles from '../styles/Layout.module.css'
@@ -8,11 +9,16 @@ const Layout: NextPage = ({ children }) => {
     <>
       <AppBar position="static">
         <Toolbar>
-          <Link href="/" passHref>
-            <Typography variant="h6" className={styles.title}>
-              Stock Game
-            </Typography>
-          </Link>
+
+          <Grid container>
+            <Grid item>
+              <Link href="/" passHref>
+                <Button size="large" startIcon={<ShowChartIcon />}>
+                  Stock Game
+                </Button>
+              </Link>
+            </Grid>
+          </Grid>
 
           <Link href="/profile" passHref>
             <Button color="inherit" variant='outlined'>Profile</Button>
