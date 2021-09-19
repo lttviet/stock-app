@@ -68,7 +68,7 @@ const Profile: NextPage = () => {
         >
           <Grid item xs={12} sm={12} lg={6}>
             <TextField
-              label="Search stock..."
+              placeholder="Search stock..."
               fullWidth
               InputProps={{
                 startAdornment:
