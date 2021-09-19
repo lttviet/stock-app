@@ -13,31 +13,32 @@ const Login: NextPage<LoginProps> = ({ loggedIn }: LoginProps) => {
         <title>Login</title>
       </Head>
 
-      <Grid
-        container
-        spacing={3}
-        direction="column"
-        justifyContent="center"
-        alignItems="stretch"
-      >
-        <Grid item xs={12} sm={6} lg={4}>
-          <Typography variant="h4">Sign in</Typography>
-        </Grid>
-        <Grid item xs={12} sm={6} lg={4}>
-          <TextField
-            label="Email"
-            fullWidth
-          />
-        </Grid>
-        <Grid item xs={12} sm={6} lg={4}>
-          <Button variant="contained" color="primary">
-            Email link
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body1">
-            Firebase is used for passwordless authentication.
-          </Typography>
+      <Grid container spacing={3}>
+        <Grid
+          container item
+          spacing={3}
+          direction="column"
+          xs={12} md={6} lg={4}
+        >
+          <Grid item>
+            <Typography variant="h4">Sign in</Typography>
+          </Grid>
+          <Grid item>
+            <TextField
+              label="Email"
+              fullWidth
+            />
+          </Grid>
+          <Grid item>
+            <Button variant="contained" color="primary">
+              Email link
+            </Button>
+          </Grid>
+          <Grid item>
+            <Typography variant="body1">
+              Firebase is used for passwordless authentication.
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
     </>

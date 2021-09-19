@@ -28,101 +28,107 @@ const Profile: NextPage = () => {
     <>
       <Grid
         container
-        spacing={3}
-        direction="row"
-      >
-        <Grid item xs={12} sm={12} lg={6}>
-          <Card>
-            <CardContent>
-              <Typography gutterBottom variant="h6">
-                Portfolio Value
-              </Typography>
-              <Typography variant="h4">
-                $0.00
-              </Typography>
-            </CardContent>
-          </Card>
+        direction="column"
+        spacing={1}>
+
+        <Grid
+          container item
+          spacing={2}
+        >
+          <Grid item xs={12} sm={12} lg={6}>
+            <Card>
+              <CardContent>
+                <Typography gutterBottom variant="h6">
+                  Portfolio Value
+                </Typography>
+                <Typography variant="h4">
+                  $0.00
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid item xs={12} sm={12} lg={6}>
+            <Card>
+              <CardContent>
+                <Typography gutterBottom variant="h6">
+                  Cash
+                </Typography>
+                <Typography variant="h4">
+                  $0.00
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         </Grid>
 
-        <Grid item xs={12} sm={12} lg={6}>
-          <Card>
-            <CardContent>
-              <Typography gutterBottom variant="h6">
-                Cash
-              </Typography>
-              <Typography variant="h4">
-                $0.00
-              </Typography>
-            </CardContent>
-          </Card>
+        <Grid
+          container item
+          spacing={2}
+        >
+          <Grid item xs={12} sm={12} lg={6}>
+            <TextField
+              label="Search stock..."
+              fullWidth
+              InputProps={{
+                startAdornment:
+                  <InputAdornment position="start">
+                    <SearchIcon></SearchIcon>
+                  </InputAdornment>
+              }}
+            />
+          </Grid>
         </Grid>
+
+        <Grid
+          container item
+          spacing={2}
+        >
+          <Grid item xs={12} sm={12} lg={6}>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
+                  <TableCell>Stock</TableCell>
+                  <TableCell align="right">Quantity</TableCell>
+                  <TableCell align="right">Average Cost</TableCell>
+                  <TableCell align="right">Current Price</TableCell>
+                </TableHead>
+
+                <TableBody>
+                  {stocks.map((row) => (
+                    <TableRow key={row.symbol}>
+                      <TableCell component="th" scope="row">{row.symbol}</TableCell>
+                      <TableCell align="right">{row.quantity}</TableCell>
+                      <TableCell align="right">{row.averageCost}</TableCell>
+                      <TableCell align="right">{row.currentPrice}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
+
+          <Grid item xs={12} sm={12} lg={6}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6">
+                  History
+                </Typography>
+                <List>
+                  {logs.map((log) => (
+                    <ListItem>
+                      <ListItemText primary={log} key={log} />
+                    </ListItem>
+                  ))}
+                </List>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+
       </Grid>
 
-      <Grid
-        container
-        spacing={3}
-        direction="row"
-      >
-        <Grid item xs={12} sm={12} lg={6}>
-          <TextField
-            label="Search stock..."
-            fullWidth
-            InputProps={{
-              startAdornment:
-                <InputAdornment position="start">
-                  <SearchIcon></SearchIcon>
-                </InputAdornment>
-            }}
-          />
-        </Grid>
-      </Grid>
 
-      <Grid
-        container
-        spacing={3}
-        direction="row"
-      >
-        <Grid item xs={12} sm={12} lg={6}>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableCell>Stock</TableCell>
-                <TableCell align="right">Quantity</TableCell>
-                <TableCell align="right">Average Cost</TableCell>
-                <TableCell align="right">Current Price</TableCell>
-              </TableHead>
-
-              <TableBody>
-                {stocks.map((row) => (
-                  <TableRow key={row.symbol}>
-                    <TableCell component="th" scope="row">{row.symbol}</TableCell>
-                    <TableCell align="right">{row.quantity}</TableCell>
-                    <TableCell align="right">{row.averageCost}</TableCell>
-                    <TableCell align="right">{row.currentPrice}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Grid>
-
-        <Grid item xs={12} sm={12} lg={6}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6">
-                History
-              </Typography>
-              <List>
-                {logs.map((log) => (
-                  <ListItem>
-                    <ListItemText primary={log} key={log} />
-                  </ListItem>
-                ))}
-              </List>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
     </>
   )
 }
