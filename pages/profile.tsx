@@ -1,5 +1,6 @@
-import { Card, CardContent, Grid, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import { Card, CardContent, Grid, InputAdornment, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import type { NextPage } from 'next'
+import SearchIcon from '@mui/icons-material/Search'
 
 const Profile: NextPage = () => {
   const logs: string[] = [
@@ -66,6 +67,12 @@ const Profile: NextPage = () => {
           <TextField
             label="Search stock..."
             fullWidth
+            InputProps={{
+              startAdornment:
+                <InputAdornment position="start">
+                  <SearchIcon></SearchIcon>
+                </InputAdornment>
+            }}
           />
         </Grid>
       </Grid>
