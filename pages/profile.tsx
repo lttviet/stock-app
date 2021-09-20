@@ -1,6 +1,7 @@
 import SearchIcon from '@mui/icons-material/Search'
 import { Card, CardContent, Grid, InputAdornment, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
 import type { NextPage } from 'next'
+import Head from 'next/head'
 
 const Profile: NextPage = () => {
   const logs: string[] = [
@@ -26,6 +27,10 @@ const Profile: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Profile</title>
+      </Head>
+
       <Grid
         container
         direction="column"
