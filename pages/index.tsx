@@ -41,8 +41,6 @@ const Home: NextPage = () => {
         <Typography variant="h4">Loading...</Typography>
       }
 
-      {error && <>{error.message}</>}
-
       <List>
         {
           articles.map((article) => (
