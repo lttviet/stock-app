@@ -87,17 +87,20 @@ const Profile: NextPage = () => {
           <Grid item xs={12} sm={12} lg={6}>
             <TableContainer component={Paper}>
               <Table>
+
                 <TableHead>
-                  <TableCell>Stock</TableCell>
-                  <TableCell align="right">Quantity</TableCell>
-                  <TableCell align="right">Average Cost</TableCell>
-                  <TableCell align="right">Current Price</TableCell>
+                  <TableRow>
+                    <TableCell>Stock</TableCell>
+                    <TableCell align="right">Quantity</TableCell>
+                    <TableCell align="right">Average Cost</TableCell>
+                    <TableCell align="right">Current Price</TableCell>
+                  </TableRow>
                 </TableHead>
 
                 <TableBody>
                   {stocks.map((row) => (
                     <TableRow key={row.symbol}>
-                      <TableCell component="th" scope="row">{row.symbol}</TableCell>
+                      <TableCell>{row.symbol}</TableCell>
                       <TableCell align="right">{row.quantity}</TableCell>
                       <TableCell align="right">{row.averageCost}</TableCell>
                       <TableCell align="right">{row.currentPrice}</TableCell>
@@ -116,8 +119,8 @@ const Profile: NextPage = () => {
                 </Typography>
                 <List>
                   {logs.map((log) => (
-                    <ListItem>
-                      <ListItemText primary={log} key={log} />
+                    <ListItem key={log}>
+                      <ListItemText primary={log} />
                     </ListItem>
                   ))}
                 </List>
