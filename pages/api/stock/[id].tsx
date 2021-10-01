@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 type Data = {
   error: string
 } | {
-  c: number
+  price: number
 }
 
 export default async function handler(
@@ -29,8 +29,8 @@ export default async function handler(
       throw response.statusText
     }
 
-    const jsonData: Data = await response.json()
-    res.status(200).json(jsonData)
+    const jsonData = await response.json()
+    res.status(200).json({ price: jsonData.c })
   }
   catch (e) {
     console.error(e)

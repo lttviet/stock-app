@@ -1,23 +1,11 @@
 import SearchIcon from '@mui/icons-material/Search'
 import { Button, Grid, InputAdornment, TextField, Typography } from '@mui/material'
 import type { NextPage } from 'next'
-import { useEffect, useState } from 'react'
+import useQuote from '../hooks/useQuote'
 
 const Search: NextPage = () => {
-  const [price, setPrice] = useState(0)
-
-  useEffect(() => {
-    fetch('/api/stock/GME')
-      .then(res => res.json())
-      .then(
-        (res) => {
-          setPrice(res.c)
-        },
-        (e) => {
-          console.error(e)
-        }
-      )
-  }, [])
+  const symbol = 'GME'
+  const { quote, isLoading, isError } = useQuote(symbol)
 
   return (
     <Grid
@@ -43,19 +31,36 @@ const Search: NextPage = () => {
         spacing={1}
         alignItems="center"
       >
-        <Grid item>
-          <Typography variant="h6">
-            GME - ${price}
-          </Typography>
-        </Grid>
+        {isLoading &&
+          <Grid item>
+            <Typography variant="h6">Loading...</Typography>
+          </Grid>
+        }
 
-        <Grid item>
-          <Button variant="contained">Buy</Button>
-        </Grid>
+        {isError &&
+          <Grid item>
+            <Typography variant="h6">Failed to get price.</Typography>
+          </Grid>
+        }
 
-        <Grid item>
-          <Button variant="contained" color="error">Sell</Button>
-        </Grid>
+        {!isLoading && !isError &&
+          <>
+            <Grid item>
+              <Typography variant="h6">
+                ${symbol} - ${quote.price}
+              </Typography>
+            </Grid>
+
+            <Grid item>
+              <Button variant="contained">Buy</Button>
+            </Grid>
+
+            <Grid item>
+              <Button variant="contained" color="error">Sell</Button>
+            </Grid>
+          </>
+        }
+
       </Grid>
     </Grid>
   )
