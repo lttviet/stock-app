@@ -1,7 +1,7 @@
-import SearchIcon from '@mui/icons-material/Search'
-import { Card, CardContent, Grid, InputAdornment, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material'
+import { Card, CardContent, Grid, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import Search from '../components/search'
 
 const Profile: NextPage = () => {
   const logs: string[] = [
@@ -34,7 +34,7 @@ const Profile: NextPage = () => {
       <Grid
         container
         direction="column"
-        spacing={1}>
+        spacing={4}>
 
         <Grid
           container item
@@ -67,23 +67,7 @@ const Profile: NextPage = () => {
           </Grid>
         </Grid>
 
-        <Grid
-          container item
-          spacing={2}
-        >
-          <Grid item xs={12} sm={12} lg={6}>
-            <TextField
-              placeholder="Search stock..."
-              fullWidth
-              InputProps={{
-                startAdornment:
-                  <InputAdornment position="start">
-                    <SearchIcon></SearchIcon>
-                  </InputAdornment>
-              }}
-            />
-          </Grid>
-        </Grid>
+        <Search />
 
         <Grid
           container item
