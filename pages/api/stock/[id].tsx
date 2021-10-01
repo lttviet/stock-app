@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type Data = {
-  error: string
-} | {
   price: number
+} | {
+  error: string
 }
 
 export default async function handler(
@@ -24,15 +24,15 @@ export default async function handler(
   try {
     const url = `${process.env.FINNHUB_QUOTE_API_URL}&symbol=${id}`
     const response = await fetch(url)
+    const jsonData = await response.json()
 
     if (!response.ok) {
-      throw response.statusText
+      res.status(response.status).json(jsonData)
+      return
     }
 
-    const jsonData = await response.json()
     res.status(200).json({ price: jsonData.c })
-  }
-  catch (e) {
+  } catch (e: any) {
     console.error(e)
     res.status(500).json({ error: 'Internal Server Error' })
   }
