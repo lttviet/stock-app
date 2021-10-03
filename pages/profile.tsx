@@ -1,7 +1,19 @@
-import { Card, CardContent, Grid, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Search from '../components/search'
+import { Card, CardContent, Grid, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { doc, getFirestore } from 'firebase/firestore';
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { FirestoreProvider, useFirebaseApp, useFirestore, useFirestoreDocData } from 'reactfire';
+import Search from '../components/search';
+
+const WrappedProfile = () => {
+  const firestoreInstance = getFirestore(useFirebaseApp())
+
+  return (
+    <FirestoreProvider sdk={firestoreInstance}>
+      <Profile />
+    </FirestoreProvider>
+  )
+}
 
 const Profile: NextPage = () => {
   const logs: string[] = [
@@ -25,6 +37,9 @@ const Profile: NextPage = () => {
     }
   ]
 
+  const userRef = doc(useFirestore(), 'users', 'R16f4urzn2pn4WGdvDQG')
+  const { status, data } = useFirestoreDocData(userRef)
+
   return (
     <>
       <Head>
@@ -47,7 +62,9 @@ const Profile: NextPage = () => {
                   Portfolio Value
                 </Typography>
                 <Typography variant="h4">
-                  $0.00
+                  {status === 'loading' && 'Loading...'}
+                  {status === 'success' && `$${data.value / 100}`}
+                  {status === 'error' && 'Failed to connect.'}
                 </Typography>
               </CardContent>
             </Card>
@@ -60,7 +77,9 @@ const Profile: NextPage = () => {
                   Cash
                 </Typography>
                 <Typography variant="h4">
-                  $0.00
+                  {status === 'loading' && 'Loading...'}
+                  {status === 'success' && `$${data.cash / 100}`}
+                  {status === 'error' && 'Failed to connect.'}
                 </Typography>
               </CardContent>
             </Card>
@@ -125,4 +144,4 @@ const Profile: NextPage = () => {
   )
 }
 
-export default Profile
+export default WrappedProfile
