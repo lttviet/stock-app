@@ -1,11 +1,21 @@
 import SearchIcon from '@mui/icons-material/Search'
-import { Button, Grid, InputAdornment, TextField, Typography } from '@mui/material'
+import { Autocomplete, Grid, InputAdornment, TextField } from '@mui/material'
 import type { NextPage } from 'next'
-import useQuote from '../hooks/useQuote'
+import { SyntheticEvent, useState } from 'react'
+import SearchResult from './searchResult'
+
+const tickers = [
+  'AAPL', 'AA', 'GME', 'TSLA', 'MSFT', 'FB'
+]
 
 const Search: NextPage = () => {
-  const symbol = 'GME'
-  const { quote, isLoading, isError } = useQuote(symbol)
+  const [symbol, setSymbol] = useState<string | null>(null)
+  const [show, setShow] = useState(false)
+
+  const updateSymbol = (_: SyntheticEvent<Element, Event>, newValue: string | null) => {
+    setSymbol(newValue)
+    setShow(!!newValue)
+  }
 
   return (
     <Grid
@@ -13,55 +23,29 @@ const Search: NextPage = () => {
       spacing={2}
     >
       <Grid item xs={12} sm={12} lg={6}>
-        <TextField
-          placeholder="Search stock..."
-          fullWidth
-          InputProps={{
-            startAdornment:
-              <InputAdornment position="start">
-                <SearchIcon></SearchIcon>
-              </InputAdornment>
-          }}
+        <Autocomplete
+          value={symbol}
+          onChange={updateSymbol}
+          options={tickers}
+          autoHighlight
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="Search stock..."
+              fullWidth
+              InputProps={{
+                ...params.InputProps,
+                startAdornment:
+                  <InputAdornment position="start">
+                    <SearchIcon></SearchIcon>
+                  </InputAdornment>
+              }}
+            />
+          )}
         />
       </Grid>
 
-      <Grid
-        container item
-        xs={12} sm={12} lg={6}
-        spacing={1}
-        alignItems="center"
-      >
-        {isLoading &&
-          <Grid item>
-            <Typography variant="h6">Loading...</Typography>
-          </Grid>
-        }
-
-        {isError &&
-          <Grid item>
-            <Typography variant="h6">Failed to get price.</Typography>
-          </Grid>
-        }
-
-        {!isLoading && !isError &&
-          <>
-            <Grid item>
-              <Typography variant="h6">
-                ${symbol} - ${quote.price}
-              </Typography>
-            </Grid>
-
-            <Grid item>
-              <Button variant="contained">Buy</Button>
-            </Grid>
-
-            <Grid item>
-              <Button variant="contained" color="error">Sell</Button>
-            </Grid>
-          </>
-        }
-
-      </Grid>
+      {show && <SearchResult symbol={symbol} />}
     </Grid>
   )
 }

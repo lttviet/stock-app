@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-type Data = {
+type QuoteResponse = {
   price: number
 } | {
   error: string
@@ -8,12 +8,17 @@ type Data = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<QuoteResponse>
 ) {
   const {
     query: { id },
     method
   } = req
+
+  if (!id) {
+    res.status(404).json({ error: 'Missing stock symbol' })
+    return
+  }
 
   if (method !== 'GET') {
     res.setHeader('Allow', ['GET'])
