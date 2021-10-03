@@ -1,37 +1,46 @@
 import ShowChartIcon from '@mui/icons-material/ShowChart'
-import { AppBar, Button, Grid, Toolbar } from '@mui/material'
+import { AppBar, Box, Button, Grid, Toolbar } from '@mui/material'
 import type { NextPage } from 'next'
-import Link from 'next/link'
-import styles from '../styles/Layout.module.css'
+import Link from './Link'
 
 const Layout: NextPage = ({ children }) => {
   return (
     <>
       <AppBar position="static">
         <Toolbar>
-
           <Grid container>
             <Grid item>
-              <Link href="/" passHref>
-                <Button size="large" startIcon={<ShowChartIcon />}>
-                  Stock Game
-                </Button>
-              </Link>
+              <Button
+                size="large"
+                startIcon={<ShowChartIcon />}
+                component={Link}
+                href="/"
+              >
+                Stock Game
+              </Button>
             </Grid>
           </Grid>
 
-          <Link href="/profile" passHref>
-            <Button color="inherit" variant='outlined'>Profile</Button>
-          </Link>
-          <Link href="/login" passHref>
-            <Button color="inherit" variant='outlined'>Login</Button>
-          </Link>
+          <Button
+            variant="outlined"
+            component={Link}
+            href="/profile"
+          >
+            Profile
+          </Button>
+          <Button
+            variant="outlined"
+            component={Link}
+            href="/login"
+          >
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
 
-      <div className={styles.container}>
+      <Box sx={{ margin: '1em' }}>
         {children}
-      </div>
+      </Box>
     </>
 
   )
