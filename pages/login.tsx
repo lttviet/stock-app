@@ -1,14 +1,15 @@
 import { Button, Grid, TextField, Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import Layout from '../components/layout'
 
-type LoginProps = {
+interface Props {
   loggedIn: boolean
 }
 
-const Login: NextPage<LoginProps> = ({ loggedIn }: LoginProps) => {
+const Login: NextPage<Props> = ({ loggedIn }) => {
   return (
-    <>
+    <Layout>
       <Head>
         <title>Login</title>
       </Head>
@@ -41,7 +42,7 @@ const Login: NextPage<LoginProps> = ({ loggedIn }: LoginProps) => {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </Layout>
   )
 }
 

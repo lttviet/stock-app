@@ -1,12 +1,11 @@
 import { Button, Grid, Typography } from '@mui/material'
-import type { NextPage } from 'next'
 import useQuote from '../hooks/useQuote'
 
 interface Props {
   symbol: string | null
 }
 
-const SearchResult: NextPage<Props> = ({ symbol }) => {
+const SearchResult = ({ symbol }: Props) => {
   const { quote, isLoading, isError } = useQuote(symbol)
 
   if (!symbol) return null

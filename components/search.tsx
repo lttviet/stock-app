@@ -1,6 +1,5 @@
 import SearchIcon from '@mui/icons-material/Search'
 import { Autocomplete, Grid, InputAdornment, TextField } from '@mui/material'
-import type { NextPage } from 'next'
 import { SyntheticEvent, useState } from 'react'
 import SearchResult from './searchResult'
 
@@ -8,7 +7,7 @@ const tickers = [
   'AAPL', 'AA', 'GME', 'TSLA', 'MSFT', 'FB'
 ]
 
-const Search: NextPage = () => {
+const Search = () => {
   const [symbol, setSymbol] = useState<string | null>(null)
   const [show, setShow] = useState(false)
 

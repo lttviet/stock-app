@@ -3,6 +3,7 @@ import { doc, getFirestore } from 'firebase/firestore';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { FirestoreProvider, useFirebaseApp, useFirestore, useFirestoreDocData } from 'reactfire';
+import Layout from '../components/layout';
 import Search from '../components/search';
 
 const WrappedProfile = () => {
@@ -41,7 +42,7 @@ const Profile: NextPage = () => {
   const { status, data } = useFirestoreDocData(userRef)
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Profile</title>
       </Head>
@@ -136,11 +137,8 @@ const Profile: NextPage = () => {
             </Card>
           </Grid>
         </Grid>
-
       </Grid>
-
-
-    </>
+    </Layout>
   )
 }
 

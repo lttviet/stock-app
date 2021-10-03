@@ -1,10 +1,11 @@
 import { Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import Layout from '../components/layout'
 
 const Home: NextPage = () => {
   return (
-    <>
+    <Layout>
       <Head>
         <title>Stock Game</title>
       </Head>
@@ -14,7 +15,7 @@ const Home: NextPage = () => {
         Enjoy your stay.
         Currently WIP.
       </Typography>
-    </>
+    </Layout>
   )
 }
 
