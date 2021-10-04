@@ -1,12 +1,12 @@
 import { Button, Grid, Typography } from '@mui/material'
-import useQuote from '../hooks/useQuote'
+import useSocket from '../hooks/useSocket'
 
 interface Props {
   symbol: string | null
 }
 
 const SearchResult = ({ symbol }: Props) => {
-  const { quote, isLoading, isError } = useQuote(symbol)
+  const { quote, loading, error } = useSocket(symbol)
 
   if (!symbol) return null
 
@@ -17,23 +17,23 @@ const SearchResult = ({ symbol }: Props) => {
       spacing={1}
       alignItems="center"
     >
-      {isLoading &&
+      {loading &&
         <Grid item>
           <Typography variant="h6">Loading...</Typography>
         </Grid>
       }
 
-      {isError &&
+      {error &&
         <Grid item>
           <Typography variant="h6">Failed to get price.</Typography>
         </Grid>
       }
 
-      {!isLoading && !isError &&
+      {!loading && !error &&
         <>
           <Grid item>
             <Typography variant="h6">
-              ${symbol} - ${quote.price}
+              ${symbol} - {quote.symbol === symbol && ` $${quote.price}`}
             </Typography>
           </Grid>
 

@@ -19,8 +19,7 @@ export default function useQuote(symbol: string | null) {
   const { data, error } =
     useSWR(
       `/api/stock/${symbol.toUpperCase()}`,
-      fletcher,
-      { refreshInterval: 2000 }
+      fletcher
     )
 
   return {
