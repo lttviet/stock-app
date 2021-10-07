@@ -1,5 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
 import { getAuth, sendSignInLinkToEmail } from 'firebase/auth'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import firebaseApp from '../../lib/firebase'
 
 type RequestJson = {
   email: string
@@ -35,7 +36,7 @@ export default async function handler(
   const email = json.email
 
   try {
-    const auth = getAuth()
+    const auth = getAuth(firebaseApp)
     await sendSignInLinkToEmail(auth, email, actionCodeSettings)
     res.status(200).json({ status: 'Email sent.' })
   } catch (error: any) {
