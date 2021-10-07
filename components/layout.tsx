@@ -14,8 +14,7 @@ const Layout = ({ children }: Props) => {
         {children}
       </Box>
     </>
-
   )
 }
 
-export default Layout;
+export default Layout

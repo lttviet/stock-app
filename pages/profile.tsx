@@ -1,20 +1,10 @@
-import { Card, CardContent, Grid, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import { doc, getFirestore } from 'firebase/firestore';
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import { FirestoreProvider, useFirebaseApp, useFirestore, useFirestoreDocData } from 'reactfire';
-import Layout from '../components/layout';
-import Search from '../components/search';
-
-const WrappedProfile = () => {
-  const firestoreInstance = getFirestore(useFirebaseApp())
-
-  return (
-    <FirestoreProvider sdk={firestoreInstance}>
-      <Profile />
-    </FirestoreProvider>
-  )
-}
+import { Card, CardContent, Grid, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { doc } from 'firebase/firestore'
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import { useFirestore, useFirestoreDocData } from 'reactfire'
+import Layout from '../components/layout'
+import Search from '../components/search'
 
 const Profile: NextPage = () => {
   const logs: string[] = [
@@ -142,4 +132,4 @@ const Profile: NextPage = () => {
   )
 }
 
-export default WrappedProfile
+export default Profile

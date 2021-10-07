@@ -3,11 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Layout from '../components/layout'
 
-interface Props {
-  loggedIn: boolean
-}
-
-const Login: NextPage<Props> = ({ loggedIn }) => {
+const Login: NextPage = () => {
   return (
     <Layout>
       <Head>

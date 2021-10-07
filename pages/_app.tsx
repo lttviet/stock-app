@@ -4,7 +4,7 @@ import { createTheme, CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import type { AppProps } from 'next/app'
 import { FirebaseAppProvider } from 'reactfire'
-import Layout from '../components/layout'
+import FirebaseProvider from '../components/firebaseProvider'
 
 // https://github.com/mui-org/material-ui/blob/master/examples/nextjs-with-typescript/pages/_app.tsx
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -34,14 +34,16 @@ const MyApp = (props: MyAppProps) => {
   };
 
   return (
-    <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-      <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </CacheProvider>
-    </FirebaseAppProvider>
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+          <FirebaseProvider>
+            <Component {...pageProps} />
+          </FirebaseProvider>
+        </FirebaseAppProvider>
+      </ThemeProvider>
+    </CacheProvider>
   )
 }
 
