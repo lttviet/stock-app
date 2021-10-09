@@ -8,7 +8,7 @@ interface Props {
 const SearchResult = ({ symbol }: Props) => {
   const { quote, loading, error } = useSocket(symbol)
 
-  if (!symbol) return
+  if (!symbol) return null
 
   if (loading) {
     return (

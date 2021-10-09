@@ -29,7 +29,7 @@ const EmailLogin: NextPage = () => {
         }
       )
     }
-  }, [])
+  }, [router, auth])
 
 
   return (

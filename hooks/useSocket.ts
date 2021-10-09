@@ -28,7 +28,6 @@ export default function useSocket(symbol: string | null) {
   const [error, setError] = useState(false)
   const socket = useRef<WebSocket | null>(null)
 
-  const isBrowser = typeof window !== 'undefined'
   const url = process.env.NEXT_PUBLIC_FINNHUB_WEBSOCKET ?? ''
 
   useEffect(() => {
@@ -37,7 +36,7 @@ export default function useSocket(symbol: string | null) {
       setLoading(false)
       setError(true)
     }
-    else if (isBrowser) {
+    else {
       socket.current = new WebSocket(url)
 
       socket.current.onopen = () => setLoading(false)
