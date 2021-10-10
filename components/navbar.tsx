@@ -1,4 +1,4 @@
-import ShowChartIcon from '@mui/icons-material/ShowChart'
+import { ShowChart } from '@mui/icons-material'
 import { AppBar, Box, Button, Toolbar } from '@mui/material'
 import { useSigninCheck } from 'reactfire'
 import { signout } from '../lib/firebase'
@@ -8,12 +8,12 @@ const Navbar = () => {
   const { data: signInCheckResult } = useSigninCheck()
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Toolbar>
         <Box sx={{ flexGrow: 1 }}>
           <Button
             size="large"
-            startIcon={<ShowChartIcon />}
+            startIcon={<ShowChart />}
             component={Link}
             href="/"
           >
@@ -37,7 +37,7 @@ const Navbar = () => {
           </Button>
         )}
       </Toolbar>
-    </AppBar >
+    </AppBar>
   )
 }
 

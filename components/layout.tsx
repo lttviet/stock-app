@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Toolbar } from '@mui/material'
 import Navbar from './navbar'
 
 interface Props {
@@ -7,13 +7,14 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <>
+    <Box sx={{ display: 'flex' }}>
       <Navbar />
 
-      <Box sx={{ margin: '1em' }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
         {children}
       </Box>
-    </>
+    </Box>
   )
 }
 
