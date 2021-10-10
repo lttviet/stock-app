@@ -1,35 +1,56 @@
-import { Card, CardContent, Grid, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Card, CardContent, Grid, LinearProgress, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import { doc } from 'firebase/firestore'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useFirestore, useFirestoreDocData } from 'reactfire'
+import { useEffect, useState } from 'react'
+import { useFirestore, useFirestoreDocData, useUser } from 'reactfire'
 import Layout from '../components/layout'
 import Search from '../components/search'
+import useRequireAuth from '../hooks/useRequireAuth'
 
+const logs: string[] = [
+  "Buy AAPL at $1.23",
+  "Sell AAPL at $23.33",
+  "Test 123..."
+]
+
+const stocks = [
+  {
+    symbol: "AAPL",
+    quantity: 23,
+    averageCost: 12.11,
+    currentPrice: 123.33
+  },
+  {
+    symbol: "GE",
+    quantity: 12,
+    averageCost: 3,
+    currentPrice: 4.5
+  }
+]
+
+const WrappedProfile: NextPage = () => {
+  const signedIn = useRequireAuth('/login')
+
+  if (!signedIn) return <LinearProgress />
+  return <Profile />
+}
+
+// TODO refactor
 const Profile: NextPage = () => {
-  const logs: string[] = [
-    "Buy AAPL at $1.23",
-    "Sell AAPL at $23.33",
-    "Test 123..."
-  ]
+  const [value, setValue] = useState(0)
+  const [cash, setCash] = useState(0)
 
-  const stocks = [
-    {
-      symbol: "AAPL",
-      quantity: 23,
-      averageCost: 12.11,
-      currentPrice: 123.33
-    },
-    {
-      symbol: "GE",
-      quantity: 12,
-      averageCost: 3,
-      currentPrice: 4.5
-    }
-  ]
-
-  const userRef = doc(useFirestore(), 'users', 'R16f4urzn2pn4WGdvDQG')
+  const { data: user } = useUser()
+  const userRef = doc(useFirestore(), `users/${user?.uid}`)
   const { status, data } = useFirestoreDocData(userRef)
+
+  useEffect(() => {
+    if (status === 'success') {
+      setValue(data.value || 0)
+      setCash(data.cash || 0)
+    }
+  }, [status, data])
 
   return (
     <Layout>
@@ -54,7 +75,7 @@ const Profile: NextPage = () => {
                 </Typography>
                 <Typography variant="h4">
                   {status === 'loading' && 'Loading...'}
-                  {status === 'success' && `$${data.value / 100}`}
+                  {status === 'success' && (value / 100).toFixed(2)}
                   {status === 'error' && 'Failed to connect.'}
                 </Typography>
               </CardContent>
@@ -69,7 +90,7 @@ const Profile: NextPage = () => {
                 </Typography>
                 <Typography variant="h4">
                   {status === 'loading' && 'Loading...'}
-                  {status === 'success' && `$${data.cash / 100}`}
+                  {status === 'success' && (cash / 100).toFixed(2)}
                   {status === 'error' && 'Failed to connect.'}
                 </Typography>
               </CardContent>
@@ -132,4 +153,4 @@ const Profile: NextPage = () => {
   )
 }
 
-export default Profile
+export default WrappedProfile

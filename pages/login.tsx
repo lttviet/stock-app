@@ -1,8 +1,23 @@
-import { Button, Grid, TextField, Typography } from '@mui/material'
+import { Button, Grid, LinearProgress, TextField, Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from 'react'
+import { useRouter } from 'next/router'
+import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect, useState } from 'react'
+import { useSigninCheck } from 'reactfire'
 import Layout from '../components/layout'
+
+const WrappedLogin: NextPage = () => {
+  const { status, data: signInCheckResult } = useSigninCheck()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status !== 'loading' && signInCheckResult.signedIn)
+      router.push('/profile')
+  }, [status, signInCheckResult])
+
+  if (status === 'loading') return <LinearProgress />
+  return <Login />
+}
 
 const Login: NextPage = () => {
   // TODO look into form library
@@ -12,6 +27,8 @@ const Login: NextPage = () => {
   const [error, setError] = useState(false)
   const [errorText, setErrorText] = useState('')
   const [sentEmail, setSentEmail] = useState(false)
+
+
 
   const updateTouched = (_: MouseEvent<HTMLDivElement>) => {
     setTouched(true)
@@ -110,4 +127,4 @@ const Login: NextPage = () => {
   )
 }
 
-export default Login;
+export default WrappedLogin;
