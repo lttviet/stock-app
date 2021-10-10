@@ -1,3 +1,4 @@
+import { getAuth } from "@firebase/auth";
 import { initializeApp, getApps, getApp } from "firebase/app";
 
 const firebaseConfig = {
@@ -11,5 +12,7 @@ const firebaseConfig = {
 }
 
 const firebaseApp = (getApps().length === 0) ? initializeApp(firebaseConfig) : getApp()
+
+export const signout = () => getAuth(firebaseApp).signOut()
 
 export default firebaseApp
