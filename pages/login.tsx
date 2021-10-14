@@ -13,7 +13,7 @@ const WrappedLogin: NextPage = () => {
   useEffect(() => {
     if (status !== 'loading' && signInCheckResult.signedIn)
       router.push('/profile')
-  }, [status, signInCheckResult])
+  }, [status, signInCheckResult, router])
 
   if (status === 'loading') return <LinearProgress />
   return <Login />
