@@ -1,11 +1,8 @@
 import { Grid } from '@mui/material'
 import { SyntheticEvent, useState } from 'react'
+import { tickers } from '../../lib/tickers'
 import SearchInput from './searchInput'
 import SearchResult from './searchResult'
-
-const tickers = [
-  'AAPL', 'AA', 'GME', 'TSLA', 'MSFT', 'FB'
-]
 
 const Search = () => {
   const [symbol, setSymbol] = useState<string | null>(null)
