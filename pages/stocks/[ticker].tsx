@@ -12,9 +12,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = tickers.map(
-    (ticker) => ({
-      params: { ticker: ticker.toLowerCase() }
-    })
+    (ticker) => ({ params: { ticker } })
   )
 
   return { paths, fallback: false }
