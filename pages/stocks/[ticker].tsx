@@ -6,24 +6,18 @@ import useCandle from "../../hooks/useCandle"
 import { tickers } from "../../lib/tickers"
 import { ParentSize } from '@visx/responsive'
 
-
 export const getStaticProps: GetStaticProps = async (context) => {
   return { props: { ticker: context.params?.ticker } }
 }
 
-export const getStaticPaths: GetStaticPaths = async (context) => {
-  const upperCasePaths = tickers.map(
-    (ticker) => ({
-      params: { ticker }
-    }))
-
-  const lowerCasePaths = tickers.map(
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = tickers.map(
     (ticker) => ({
       params: { ticker: ticker.toLowerCase() }
     })
   )
 
-  return { paths: [...upperCasePaths, ...lowerCasePaths], fallback: false }
+  return { paths, fallback: false }
 }
 
 const Stock: NextPage = ({ ticker }: InferGetStaticPropsType<typeof getStaticProps>) => {
