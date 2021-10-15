@@ -1,15 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { tickers } from '../../../lib/tickers'
-import { StockData } from '../../../lib/types'
+import { SentimentData } from '../../../lib/types'
 import { getTimestamp } from '../../../lib/utils'
 
-type CandleResponse = StockData[] | {
+type SentimentResponse = SentimentData[] | {
   error: string
 }
 
+// refactor api
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<CandleResponse>
+  res: NextApiResponse<SentimentResponse>
 ) {
   const {
     query: { id },
@@ -34,13 +35,13 @@ export default async function handler(
   }
 
   const date = new Date()
-  const today = getTimestamp(date)
+  const today = date.toISOString().split('T')[0]
 
-  date.setMonth(date.getMonth() - 1)
-  const oneMonthAgo = getTimestamp(date)
+  date.setDate(date.getDate() - 7)
+  const oneWeekAgo = date.toISOString().split('T')[0]
 
   try {
-    const url = `${process.env.FINNHUB_CANDLE_API_URL}&symbol=${id}&resolution=D&from=${oneMonthAgo}&to=${today}`
+    const url = `${process.env.FINNHUB_SENTIMENT_API_URL}&symbol=${id}&from=${oneWeekAgo}&to=${today}`
     const response = await fetch(url)
     const jsonData = await response.json()
 
@@ -48,12 +49,14 @@ export default async function handler(
       return res.status(response.status).json(jsonData)
     }
 
-    const formattedData = jsonData.c.map(
-      (price: number, index: number) => (
-        { close: price, date: jsonData.t[index] * 1000 }
-      )
+    const formattedData = jsonData.reddit.reduce(
+      (summary: SentimentData, curr: SentimentData) => ({
+        mention: summary.mention + curr.mention,
+        positiveMention: summary.positiveMention + curr.positiveMention,
+        negativeMention: summary.positiveMention + curr.negativeMention,
+      }),
+      { mention: 0, positiveMention: 0, negativeMention: 0 } as SentimentData
     )
-
     res.status(200).json(formattedData)
   } catch (e: any) {
     console.error(e.message)
