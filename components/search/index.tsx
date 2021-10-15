@@ -1,28 +1,45 @@
-import { Grid } from '@mui/material'
+import SearchIcon from '@mui/icons-material/Search'
+import { Autocomplete, InputAdornment, TextField } from '@mui/material'
+import { useRouter } from 'next/router'
 import { SyntheticEvent, useState } from 'react'
 import { tickers } from '../../lib/tickers'
-import SearchInput from './searchInput'
-import SearchResult from './searchResult'
 
 const Search = () => {
   const [symbol, setSymbol] = useState<string | null>(null)
 
+  const router = useRouter()
+
   const updateSymbol = (_: SyntheticEvent<Element, Event>, newValue: string | null) => {
     setSymbol(newValue)
+    if (newValue) router.push(`/stocks/${newValue}`)
+  }
+
+  const prefecthHighlight = (_: SyntheticEvent<Element, Event>, option: string | null) => {
+    if (option) router.prefetch(`/stocks/${option}`)
   }
 
   return (
-    <Grid container item spacing={2}>
-      <Grid item xs={12} sm={12} lg={6}>
-        <SearchInput value={symbol} options={tickers} onChange={updateSymbol} />
-      </Grid>
-
-      {!!symbol &&
-        <Grid container item xs={12} sm={12} lg={6} spacing={1} alignItems="center">
-          <SearchResult symbol={symbol} />
-        </Grid>
-      }
-    </Grid>
+    <Autocomplete
+      value={symbol}
+      onChange={updateSymbol}
+      options={tickers}
+      autoHighlight
+      onHighlightChange={prefecthHighlight}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          placeholder="Search stock..."
+          fullWidth
+          InputProps={{
+            ...params.InputProps,
+            startAdornment:
+              <InputAdornment position="start">
+                <SearchIcon></SearchIcon>
+              </InputAdornment>
+          }}
+        />
+      )}
+    />
   )
 }
 

@@ -98,8 +98,6 @@ const Profile: NextPage = () => {
           </Grid>
         </Grid>
 
-        <Search />
-
         <Grid
           container item
           spacing={2}

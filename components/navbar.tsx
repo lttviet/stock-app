@@ -1,16 +1,21 @@
 import { ShowChart } from '@mui/icons-material'
-import { AppBar, Box, Button, Toolbar } from '@mui/material'
+import { AppBar, Box, Button, Toolbar, Grid } from '@mui/material'
 import { useSigninCheck } from 'reactfire'
 import { signout } from '../lib/firebase'
 import Link from './link'
+import Search from './search'
 
 const Navbar = () => {
   const { data: signInCheckResult } = useSigninCheck()
 
   return (
     <AppBar position="fixed">
-      <Toolbar>
-        <Box sx={{ flexGrow: 1 }}>
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Box
+          component={Grid}
+          item
+          display={{ xs: "none", sm: "block" }}
+        >
           <Button
             size="large"
             startIcon={<ShowChart />}
@@ -21,23 +26,33 @@ const Navbar = () => {
           </Button>
         </Box>
 
-        {signInCheckResult?.signedIn ? (
-          <>
-            <Button variant="outlined" component={Link} href="/profile">
-              Profile
-            </Button>
+        <Grid item xs={12} sm={6}>
+          <Search />
+        </Grid>
 
-            <Button variant="outlined" onClick={() => signout()}>
-              Sign out
+        <Box
+          component={Grid}
+          item
+          display={{ xs: "none", sm: "block" }}
+        >
+          {signInCheckResult?.signedIn ? (
+            <>
+              <Button variant="outlined" component={Link} href="/profile">
+                Profile
+              </Button>
+
+              <Button variant="outlined" onClick={() => signout()}>
+                Sign out
+              </Button>
+            </>
+          ) : (
+            <Button variant="outlined" component={Link} href="/login">
+              Sign in
             </Button>
-          </>
-        ) : (
-          <Button variant="outlined" component={Link} href="/login">
-            Sign in
-          </Button>
-        )}
+          )}
+        </Box>
       </Toolbar>
-    </AppBar>
+    </AppBar >
   )
 }
 
