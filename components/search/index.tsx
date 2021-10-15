@@ -1,4 +1,4 @@
-import SearchIcon from '@mui/icons-material/Search'
+import { Search as SearchIcon } from '@mui/icons-material'
 import { Autocomplete, InputAdornment, TextField } from '@mui/material'
 import { useRouter } from 'next/router'
 import { SyntheticEvent, useState } from 'react'

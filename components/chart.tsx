@@ -1,11 +1,11 @@
+import { curveMonotoneX } from "@visx/curve"
 import { localPoint } from "@visx/event"
 import { scaleLinear, scaleTime } from "@visx/scale"
 import { Bar, Circle, Line, LinePath } from '@visx/shape'
 import { Tooltip, useTooltip } from "@visx/tooltip"
 import { bisector, extent } from 'd3-array'
-import { curveMonotoneX } from "d3-shape"
 import { timeFormat } from 'd3-time-format'
-import React, { useCallback, useMemo } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { StockData } from "../lib/types"
 
 interface ChartProps {
@@ -28,6 +28,10 @@ const Chart = (
     height,
     margin = { top: 0, right: 0, bottom: 0, left: 0 },
   }: ChartProps) => {
+  const [colour, setColour] = useState('red')
+  const [innerWidth, setInnerWIdth] = useState(0)
+  const [innerHeight, setInnerHeight] = useState(0)
+
   const {
     showTooltip,
     hideTooltip,
@@ -36,14 +40,19 @@ const Chart = (
     tooltipLeft = 0
   } = useTooltip<StockData>()
 
-  const colour =
-    data.length > 1 && data[0].close >= data[data.length - 1].close
-      ? 'red'
-      : 'green'
+  useEffect(() => {
+    if (data.length > 1 && data[0].close >= data[data.length - 1].close) {
+      setColour('red')
+    } else {
+      setColour('green')
+    }
+  }, [data])
 
-  // bounds
-  const innerWidth = width - margin.right - margin.left
-  const innerHeight = height - margin.top - margin.bottom
+  useEffect(() => {
+    // bounds
+    setInnerWIdth(width - margin.right - margin.left)
+    setInnerHeight(height - margin.top - margin.bottom)
+  }, [width, height, margin])
 
   // scales
   const dateScale = useMemo(
@@ -135,6 +144,7 @@ const Chart = (
           </g>
         )}
       </svg>
+
       {tooltipData && (
         <div>
           <Tooltip
