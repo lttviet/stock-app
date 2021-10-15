@@ -4,7 +4,7 @@ import { tickers } from '../lib/tickers'
 import { StockData } from '../lib/types'
 
 export default function useCandle(ticker: string) {
-  const [stockData, setStockData] = useState<StockData[] | null>(null)
+  const [stockData, setStockData] = useState<StockData[]>([])
 
   const fletcher = async (url: string) => {
     const res = await fetch(url)
@@ -18,7 +18,7 @@ export default function useCandle(ticker: string) {
       : null, fletcher)
 
   useEffect(() => {
-    setStockData((error || !data) ? null : data)
+    setStockData((error || !data) ? [] : data)
   }, [data, error])
 
   return {

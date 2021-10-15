@@ -10,7 +10,7 @@ const Layout = ({ children }: Props) => {
     <Box sx={{ display: 'flex' }}>
       <Navbar />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, overflow: "hidden" }}>
         <Toolbar />
         {children}
       </Box>
