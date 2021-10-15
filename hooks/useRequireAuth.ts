@@ -9,7 +9,7 @@ function useRequireAuth(redirectUrl = '/login') {
   useEffect(() => {
     if (status !== 'loading' && !signInCheckResult?.signedIn)
       router.push(redirectUrl)
-  }, [status, signInCheckResult, router])
+  }, [status, signInCheckResult, router, redirectUrl])
 
   return signInCheckResult?.signedIn
 }

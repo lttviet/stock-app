@@ -28,8 +28,6 @@ const Login: NextPage = () => {
   const [errorText, setErrorText] = useState('')
   const [sentEmail, setSentEmail] = useState(false)
 
-
-
   const updateTouched = (_: MouseEvent<HTMLDivElement>) => {
     setTouched(true)
     setError(true)
