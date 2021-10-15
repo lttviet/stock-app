@@ -52,7 +52,7 @@ export default async function handler(
 
     const formattedData = jsonData.c.map(
       (price: number, index: number) => (
-        { close: price, date: jsonData.t[index] }
+        { close: price, date: jsonData.t[index] * 1000 }
       )
     )
 
