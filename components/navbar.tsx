@@ -14,7 +14,7 @@ const Navbar = () => {
         <Box
           component={Grid}
           item
-          display={{ xs: "none", sm: "block" }}
+          display={{ xs: "none", sm: "none", md: "block" }}
         >
           <Button
             size="large"
@@ -26,14 +26,14 @@ const Navbar = () => {
           </Button>
         </Box>
 
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={12} md={6}>
           <Search />
         </Grid>
 
         <Box
           component={Grid}
           item
-          display={{ xs: "none", sm: "block" }}
+          display={{ xs: "none", sm: "none", md: "block" }}
         >
           {signInCheckResult?.signedIn ? (
             <>
