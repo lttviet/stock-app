@@ -1,5 +1,6 @@
 import { curveMonotoneX } from "@visx/curve"
 import { localPoint } from "@visx/event"
+import { Group } from '@visx/group'
 import { scaleLinear, scaleTime } from "@visx/scale"
 import { Bar, Circle, Line, LinePath } from '@visx/shape'
 import { Tooltip, useTooltip } from "@visx/tooltip"
@@ -58,19 +59,19 @@ const Chart = (
   const dateScale = useMemo(
     () =>
       scaleTime({
-        range: [margin.left, innerWidth + margin.left],
+        range: [0, innerWidth],
         domain: extent(data, getDate) as [Date, Date],
       }),
-    [innerWidth, margin.left, data])
+    [innerWidth, data])
 
   const stockValueScale = useMemo(
     () =>
       scaleLinear({
-        range: [innerHeight + margin.top, margin.top],
+        range: [innerHeight, 0],
         domain: extent(data, getStockValue) as [number, number],
         nice: true
       }),
-    [innerHeight, margin.top, data])
+    [innerHeight, data])
 
   // tooltip
   const handleTooltip = useCallback(
@@ -124,7 +125,7 @@ const Chart = (
         />
 
         {tooltipData && (
-          <g>
+          <Group>
             <Line
               from={{ x: tooltipLeft, y: margin.top }}
               to={{ x: tooltipLeft, y: innerHeight + margin.top }}
@@ -141,7 +142,7 @@ const Chart = (
               strokeWidth={2}
               pointerEvents="none"
             />
-          </g>
+          </Group>
         )}
       </svg>
 

@@ -4,7 +4,6 @@ export interface StockData {
 }
 
 export interface SentimentData {
-  mention: number,
-  positiveMention: number,
-  negativeMention: number,
+  positive: number,
+  negative: number,
 }

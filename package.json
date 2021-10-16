@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.3",
     "@mui/material": "^5.0.3",
+    "@visx/axis": "^2.1.2",
     "@visx/curve": "^2.1.0",
     "@visx/event": "^2.1.2",
     "@visx/responsive": "^2.1.2",

@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { tickers } from '../../../lib/tickers'
 import { SentimentData } from '../../../lib/types'
-import { getTimestamp } from '../../../lib/utils'
 
 type SentimentResponse = SentimentData[] | {
   error: string
@@ -50,12 +49,11 @@ export default async function handler(
     }
 
     const formattedData = jsonData.reddit.reduce(
-      (summary: SentimentData, curr: SentimentData) => ({
-        mention: summary.mention + curr.mention,
-        positiveMention: summary.positiveMention + curr.positiveMention,
-        negativeMention: summary.positiveMention + curr.negativeMention,
+      (summary: SentimentData, curr: any) => ({
+        positive: summary.positive + curr.positiveMention,
+        negative: summary.negative + curr.negativeMention,
       }),
-      { mention: 0, positiveMention: 0, negativeMention: 0 } as SentimentData
+      { positive: 0, negative: 0 } as SentimentData
     )
     res.status(200).json(formattedData)
   } catch (e: any) {
