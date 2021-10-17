@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material"
+import { Box, Grid, Typography } from "@mui/material"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
 import Layout from "../../components/layout"
@@ -22,15 +22,18 @@ const Stock: NextPage = () => {
 
   return (
     <Layout>
-      <MonthlyChart ticker={ticker} />
+      <MonthlyChart height={400} ticker={ticker} />
 
-      <div>
+      <>
         <Typography variant="h4">{ticker}</Typography>
         <Typography variant="body1">
           Reddit weekly mentions:
         </Typography>
-        <Sentiment ticker={ticker} />
-      </div>
+
+        <Box component={Grid} xs={12} sm={9} md={4}>
+          <Sentiment height={400} ticker={ticker} />
+        </Box>
+      </>
     </Layout>
   )
 }

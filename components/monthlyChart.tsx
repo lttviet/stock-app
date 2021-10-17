@@ -3,11 +3,12 @@ import { ParentSize } from '@visx/responsive'
 import useCandle from '../hooks/useCandle'
 import Chart from './chart'
 
-interface Props {
-  ticker: string
+interface MonthlyChartProps {
+  height?: number,
+  ticker: string,
 }
 
-const MonthlyChart = ({ ticker }: Props) => {
+const MonthlyChart = ({ height = 400, ticker }: MonthlyChartProps) => {
   const { data, loading, error } = useCandle(ticker as string)
 
   return (
@@ -18,7 +19,7 @@ const MonthlyChart = ({ ticker }: Props) => {
         {!error && !loading && (
           <ParentSize>
             {({ width }) => (
-              <Chart data={data} width={width} height={400} />
+              <Chart data={data} width={width} height={height} />
             )}
           </ParentSize>
         )}

@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Card, CardContent, Grid, LinearProgress, Typography } from '@mui/material'
 import { doc } from 'firebase/firestore'
 import type { NextPage } from 'next'
 import Head from 'next/head'
