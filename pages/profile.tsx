@@ -6,22 +6,8 @@ import { useEffect, useState } from 'react'
 import { useFirestore, useFirestoreDocData, useUser } from 'reactfire'
 import History from '../components/history'
 import Layout from '../components/layout'
+import PortfolioTable from '../components/portfolioTable'
 import useRequireAuth from '../hooks/useRequireAuth'
-
-const stocks = [
-  {
-    symbol: "AAPL",
-    quantity: 23,
-    averageCost: 12.11,
-    currentPrice: 123.33
-  },
-  {
-    symbol: "GE",
-    quantity: 12,
-    averageCost: 3,
-    currentPrice: 4.5
-  }
-]
 
 const WrappedProfile: NextPage = () => {
   const signedIn = useRequireAuth('/login')
@@ -99,30 +85,7 @@ const Profile: NextPage = () => {
           spacing={2}
         >
           <Grid item xs={12} sm={12} lg={6}>
-            <TableContainer component={Paper}>
-              <Table>
-
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Stock</TableCell>
-                    <TableCell align="right">Quantity</TableCell>
-                    <TableCell align="right">Average Cost</TableCell>
-                    <TableCell align="right">Current Price</TableCell>
-                  </TableRow>
-                </TableHead>
-
-                <TableBody>
-                  {stocks.map((row) => (
-                    <TableRow key={row.symbol}>
-                      <TableCell>{row.symbol}</TableCell>
-                      <TableCell align="right">{row.quantity}</TableCell>
-                      <TableCell align="right">{row.averageCost}</TableCell>
-                      <TableCell align="right">{row.currentPrice}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <PortfolioTable />
           </Grid>
 
           <Grid item xs={12} sm={12} lg={6}>
