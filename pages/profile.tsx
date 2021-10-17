@@ -1,18 +1,12 @@
-import { Card, CardContent, Grid, LinearProgress, List, ListItem, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
+import { Card, CardContent, Grid, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
 import { doc } from 'firebase/firestore'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { useFirestore, useFirestoreDocData, useUser } from 'reactfire'
+import History from '../components/history'
 import Layout from '../components/layout'
-import Search from '../components/search'
 import useRequireAuth from '../hooks/useRequireAuth'
-
-const logs: string[] = [
-  "Buy AAPL at $1.23",
-  "Sell AAPL at $23.33",
-  "Test 123..."
-]
 
 const stocks = [
   {
@@ -40,6 +34,7 @@ const WrappedProfile: NextPage = () => {
 const Profile: NextPage = () => {
   const [value, setValue] = useState(0)
   const [cash, setCash] = useState(0)
+  const [logs, setLogs] = useState<string[]>([])
 
   const { data: user } = useUser()
   const userRef = doc(useFirestore(), `users/${user?.uid}`)
@@ -49,6 +44,7 @@ const Profile: NextPage = () => {
     if (status === 'success') {
       setValue(data.value || 0)
       setCash(data.cash || 0)
+      setLogs(data.history || [])
     }
   }, [status, data])
 
@@ -135,13 +131,7 @@ const Profile: NextPage = () => {
                 <Typography variant="h6">
                   History
                 </Typography>
-                <List>
-                  {logs.map((log) => (
-                    <ListItem key={log}>
-                      <ListItemText primary={log} />
-                    </ListItem>
-                  ))}
-                </List>
+                <History logs={logs} />
               </CardContent>
             </Card>
           </Grid>
