@@ -67,9 +67,11 @@ export default function useSocket(symbol: string) {
     }
 
     return () => {
-      socket.current?.send(
-        JSON.stringify({ 'type': 'unsubscribe', 'symbol': symbol })
-      )
+      if (socket.current?.readyState === 1) {
+        socket.current?.send(
+          JSON.stringify({ 'type': 'unsubscribe', 'symbol': symbol })
+        )
+      }
     }
   }, [symbol])
 

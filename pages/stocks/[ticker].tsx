@@ -1,80 +1,58 @@
-import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material"
-import { addDoc, collection, doc, query, setDoc, where } from 'firebase/firestore'
+import { Box, Button, Grid, LinearProgress, Tooltip, Typography } from "@mui/material"
 import { NextPage } from "next"
 import { useRouter } from "next/router"
-import { useFirestore, useFirestoreCollectionData, useFirestoreDocData, useSigninCheck, useUser } from 'reactfire'
+import { useSigninCheck } from 'reactfire'
 import Layout from "../../components/layout"
 import MonthlyChart from "../../components/monthlyChart"
 import Price from "../../components/price"
 import Sentiment from "../../components/sentiment"
 import useSocket from "../../hooks/useSocket"
+import useUserData from "../../hooks/useUserData"
+import useUserStock from "../../hooks/useUserStock"
 import { tickers } from "../../lib/tickers"
+
+interface SignedInDataProps {
+  ticker: string
+}
+
+const SignedInData = ({ ticker }: SignedInDataProps) => {
+  const { data: userData } = useUserData()
+  const { data: userStockData } = useUserStock(ticker)
+
+  return (
+    <>
+      {userData && (
+        <Typography variant="body1">Cash: ${(userData.cash / 100).toFixed(2)}</Typography>
+      )}
+
+      {userStockData && (
+        <>
+          <Typography variant="body1">Your shares: {userStockData.quantity || 0}</Typography>
+          <Typography variant="body1">Average cost: ${(userStockData.cost / (userStockData.quantity * 100)).toFixed(2) || 0}</Typography>
+        </>
+      )}
+    </>
+  )
+}
 
 // refactor
 const Stock: NextPage = () => {
   const router = useRouter()
-  const ticker = router.query.ticker as string
-
-  const firestore = useFirestore()
+  const ticker = typeof router.query.ticker === 'string'
+    ? router.query.ticker
+    : ''
 
   const { data: signInCheckResult } = useSigninCheck()
-
-  const { data: user } = useUser()
-  const userRef = doc(firestore, `users/${user?.uid}`)
-  const { data } = useFirestoreDocData(userRef, { idField: 'id' })
-
-  const stocksCollectionRef = collection(firestore, `users/${user?.uid}/stocks`)
-  const stocksQuery = query(stocksCollectionRef, where('symbol', '==', ticker))
-  const { data: stocksQueryData } = useFirestoreCollectionData(stocksQuery, { idField: 'id' })
-
   const { quote, loading, error } = useSocket(ticker)
 
   const buy = () => {
-    const price = quote.price
-
-    if (data.cash < price * 100) {
-      return
-    }
-
-    // set cash
-    const newCash = data.cash - price * 100
-    setDoc(userRef, { cash: newCash }, { merge: true })
-
-    if (stocksQueryData.length === 0) {
-      // new stock
-      addDoc(stocksCollectionRef, {
-        symbol: ticker,
-        quantity: 1,
-        cost: price * 100,
-      })
-    } else {
-      const stockDoc = stocksQueryData[0]
-      const stockDocRef = doc(firestore, `users/${user?.uid}/stocks`, stockDoc.id)
-      setDoc(stockDocRef,
-        {
-          quantity: stockDoc.quantity + 1,
-          cost: stockDoc.cost + price * 100,
-        },
-        { merge: true }
-      )
-    }
+    // TODO implement
+    return
   }
 
   const sell = () => {
-    const price = quote.price
-
-    const newCash = data.cash + price * 100
-    setDoc(userRef, { cash: newCash }, { merge: true })
-
-    const stockDoc = stocksQueryData[0]
-    const stockDocRef = doc(firestore, `users/${user?.uid}/stocks`, stockDoc.id)
-    setDoc(stockDocRef,
-      {
-        quantity: stockDoc.quantity - 1,
-        cost: stockDoc.cost - price * 100,
-      },
-      { merge: true }
-    )
+    // TODO implement
+    return
   }
 
   if (!tickers.includes(ticker)) {
@@ -101,27 +79,24 @@ const Stock: NextPage = () => {
         </Box>
       </div>
 
-      {data && (
-        <Typography variant="body1">Cash: ${(data.cash / 100).toFixed(2)}</Typography>
-      )}
-
-      {stocksQueryData && stocksQueryData.length === 1 && (
-        <>
-          <Typography variant="body1">Your shares: {stocksQueryData[0].quantity || 0}</Typography>
-          <Typography variant="body1">Average cost: ${(stocksQueryData[0].cost / (stocksQueryData[0].quantity * 100)).toFixed(2) || 0}</Typography>
-        </>
-      )}
+      {signInCheckResult?.signedIn && <SignedInData ticker={ticker} />}
 
       {loading && <LinearProgress />}
       {error && <Typography variant="h4">Failed to get data</Typography>}
 
-      {!loading && !error && signInCheckResult?.signedIn && (
+      {!loading && !error && (
         <>
           <Price ticker={ticker} quote={quote} />
-          <Button variant="contained" onClick={buy}>Buy</Button>
-          <Button variant="contained" onClick={sell}>Sell</Button>
         </>
       )}
+
+      <Tooltip title="not working" arrow>
+        <Button variant="contained" onClick={buy}>Buy</Button>
+      </Tooltip>
+
+      <Tooltip title="not working" arrow>
+        <Button variant="contained" onClick={sell}>Sell</Button>
+      </Tooltip>
     </Layout>
   )
 }
