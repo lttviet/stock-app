@@ -2,7 +2,7 @@ import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material"
 import { addDoc, collection, doc, query, setDoc, where } from 'firebase/firestore'
 import { NextPage } from "next"
 import { useRouter } from "next/router"
-import { useFirestore, useFirestoreCollectionData, useFirestoreDocData, useUser } from 'reactfire'
+import { useFirestore, useFirestoreCollectionData, useFirestoreDocData, useSigninCheck, useUser } from 'reactfire'
 import Layout from "../../components/layout"
 import MonthlyChart from "../../components/monthlyChart"
 import Price from "../../components/price"
@@ -16,6 +16,8 @@ const Stock: NextPage = () => {
   const ticker = router.query.ticker as string
 
   const firestore = useFirestore()
+
+  const { data: signInCheckResult } = useSigninCheck()
 
   const { data: user } = useUser()
   const userRef = doc(firestore, `users/${user?.uid}`)
@@ -113,7 +115,7 @@ const Stock: NextPage = () => {
       {loading && <LinearProgress />}
       {error && <Typography variant="h4">Failed to get data</Typography>}
 
-      {!loading && !error && (
+      {!loading && !error && signInCheckResult?.signedIn && (
         <>
           <Price ticker={ticker} quote={quote} />
           <Button variant="contained" onClick={buy}>Buy</Button>
