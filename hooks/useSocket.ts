@@ -22,39 +22,33 @@ function createQuote(s: string): Quote | null {
 }
 
 
-export default function useSocket(symbol: string | null) {
+export default function useSocket(symbol: string) {
   const [quote, setQuote] = useState<Quote>({ symbol: '', price: 0 })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const socket = useRef<WebSocket | null>(null)
 
-  const url = process.env.NEXT_PUBLIC_FINNHUB_WEBSOCKET ?? ''
+  const url = process.env.NEXT_PUBLIC_FINNHUB_WEBSOCKET || ''
 
   useEffect(() => {
-    if (!url) {
-      console.error(`Missing socket URL.`)
+    socket.current = new WebSocket(url)
+
+    socket.current.onopen = () => setLoading(false)
+    socket.current.onerror = () => {
       setLoading(false)
       setError(true)
     }
-    else {
-      socket.current = new WebSocket(url)
 
-      socket.current.onopen = () => setLoading(false)
-      socket.current.onerror = () => {
-        setLoading(false)
-        setError(true)
-      }
+    socket.current.addEventListener('message', (event) => {
+      const quote = createQuote(event.data)
+      if (quote) setQuote(quote)
+    })
 
-      socket.current.addEventListener('message', (event) => {
-        const quote = createQuote(event.data)
-        if (quote) setQuote(quote)
-      })
-    }
 
     return () => {
       socket.current?.close()
     }
-  }, [])
+  }, [url])
 
   useEffect(() => {
     if (!socket.current) return
