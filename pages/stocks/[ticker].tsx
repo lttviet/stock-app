@@ -1,6 +1,5 @@
 import { Box, Button, Grid, LinearProgress, Tooltip, Typography } from "@mui/material"
-import { NextPage } from "next"
-import { useRouter } from "next/router"
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from "next"
 import { useSigninCheck } from 'reactfire'
 import Layout from "../../components/layout"
 import MonthlyChart from "../../components/monthlyChart"
@@ -36,12 +35,9 @@ const SignedInData = ({ ticker }: SignedInDataProps) => {
 }
 
 // refactor
-const Stock: NextPage = () => {
-  const router = useRouter()
-  const ticker = typeof router.query.ticker === 'string'
-    ? router.query.ticker
-    : ''
-
+const Stock: NextPage = (
+  { ticker }: InferGetStaticPropsType<typeof getStaticProps>
+) => {
   const { data: signInCheckResult } = useSigninCheck()
   const { quote, loading, error } = useSocket(ticker)
 
@@ -53,16 +49,6 @@ const Stock: NextPage = () => {
   const sell = () => {
     // TODO implement
     return
-  }
-
-  if (!tickers.includes(ticker)) {
-    return (
-      <Layout>
-        <Typography variant="h4">
-          404 Page Not Found. TODO: custom 404 page.
-        </Typography>
-      </Layout>
-    )
   }
 
   return (
@@ -99,6 +85,21 @@ const Stock: NextPage = () => {
       </Tooltip>
     </Layout>
   )
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  return { props: { ticker: params?.ticker as string } }
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const paths = tickers.map((ticker) => ({
+    params: { ticker }
+  }))
+
+  return {
+    paths,
+    fallback: false,
+  }
 }
 
 export default Stock
