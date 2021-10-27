@@ -7,12 +7,12 @@ import { useFirestore, useFirestoreDocData, useUser } from 'reactfire'
 import History from '../components/history'
 import Layout from '../components/layout'
 import PortfolioTable from '../components/portfolioTable'
-import useRequireAuth from '../hooks/useRequireAuth'
+import useRequireSignedIn from '../hooks/useRequireSignedIn'
 
 const WrappedProfile: NextPage = () => {
-  const signedIn = useRequireAuth('/login')
+  const { show } = useRequireSignedIn('/login')
 
-  if (!signedIn) return <LinearProgress />
+  if (!show) return <LinearProgress />
   return <Profile />
 }
 

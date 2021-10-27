@@ -1,21 +1,14 @@
 import { Button, Grid, LinearProgress, TextField, Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { ChangeEvent, KeyboardEvent, MouseEvent, useEffect, useState } from 'react'
-import { useSigninCheck } from 'reactfire'
+import { ChangeEvent, KeyboardEvent, MouseEvent, useState } from 'react'
 import Layout from '../components/layout'
+import useRequireNotSignedIn from '../hooks/useRequireNotSignedIn'
 
 const WrappedLogin: NextPage = () => {
-  const { status, data: signInCheckResult } = useSigninCheck()
-  const router = useRouter()
+  const { show } = useRequireNotSignedIn('/profile')
 
-  useEffect(() => {
-    if (status !== 'loading' && signInCheckResult.signedIn)
-      router.push('/profile')
-  }, [status, signInCheckResult, router])
-
-  if (status === 'loading') return <LinearProgress />
+  if (!show) return <LinearProgress />
   return <Login />
 }
 

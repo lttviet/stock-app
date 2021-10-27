@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { SyntheticEvent, useState } from 'react'
 import { tickers } from '../../lib/tickers'
 
-const Search = () => {
+const SearchInput = () => {
   const [symbol, setSymbol] = useState<string | null>(null)
 
   const router = useRouter()
@@ -14,7 +14,7 @@ const Search = () => {
     if (newValue) router.push(`/stocks/${newValue}`)
   }
 
-  const prefecthHighlight = (_: SyntheticEvent<Element, Event>, option: string | null) => {
+  const prefetchHighlight = (_: SyntheticEvent<Element, Event>, option: string | null) => {
     if (option) router.prefetch(`/stocks/${option}`)
   }
 
@@ -24,7 +24,7 @@ const Search = () => {
       onChange={updateSymbol}
       options={tickers}
       autoHighlight
-      onHighlightChange={prefecthHighlight}
+      onHighlightChange={prefetchHighlight}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -43,4 +43,4 @@ const Search = () => {
   )
 }
 
-export default Search
+export default SearchInput

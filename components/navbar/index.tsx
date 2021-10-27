@@ -1,9 +1,9 @@
 import { ShowChart } from '@mui/icons-material'
-import { AppBar, Box, Button, Toolbar, Grid } from '@mui/material'
+import { AppBar, Box, Button, Grid, Toolbar } from '@mui/material'
 import { useSigninCheck } from 'reactfire'
-import { signout } from '../lib/firebase'
-import Link from './link'
-import Search from './search'
+import { signout } from '../../lib/firebase'
+import Link from '../link'
+import SearchInput from './searchInput'
 
 const Navbar = () => {
   const { data: signInCheckResult } = useSigninCheck()
@@ -27,7 +27,7 @@ const Navbar = () => {
         </Box>
 
         <Grid item xs={12} sm={12} md={6}>
-          <Search />
+          <SearchInput />
         </Grid>
 
         <Box
