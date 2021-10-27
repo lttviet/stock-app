@@ -1,12 +1,4 @@
-import { Card, CardContent, Grid, LinearProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material'
-import { doc } from 'firebase/firestore'
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import { useEffect, useState } from 'react'
-import { useFirestore, useFirestoreDocData, useUser } from 'reactfire'
-import History from '../components/history'
-import Layout from '../components/layout'
-import useRequireAuth from '../hooks/useRequireAuth'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 import Link from './link'
 
 const stocks = [
