@@ -1,6 +1,6 @@
 import { LinearProgress, Typography } from "@mui/material"
 import { ParentSize } from '@visx/responsive'
-import useSentiment from '../hooks/useSentiment'
+import useSentiment from '../../hooks/useSentiment'
 import BarChart from "./barChart"
 
 interface SentimentProps {

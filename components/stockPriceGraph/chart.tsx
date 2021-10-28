@@ -7,7 +7,7 @@ import { Tooltip, useTooltip } from "@visx/tooltip"
 import { bisector, extent } from 'd3-array'
 import { timeFormat } from 'd3-time-format'
 import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { StockData } from "../lib/types"
+import { StockData } from "../../lib/types"
 
 interface ChartProps {
   data: StockData[],

@@ -1,6 +1,6 @@
 import { LinearProgress, Typography } from '@mui/material'
 import { ParentSize } from '@visx/responsive'
-import useCandle from '../hooks/useCandle'
+import useCandle from '../../hooks/useCandle'
 import Chart from './chart'
 
 interface MonthlyChartProps {

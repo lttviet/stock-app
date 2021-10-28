@@ -2,7 +2,7 @@ import { Box, Button, Grid, LinearProgress, Tooltip, Typography } from "@mui/mat
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from "next"
 import { useSigninCheck } from 'reactfire'
 import Layout from "../../components/layout"
-import MonthlyChart from "../../components/monthlyChart"
+import MonthlyChart from "../../components/stockPriceGraph"
 import Price from "../../components/price"
 import Sentiment from "../../components/sentiment"
 import useSocket from "../../hooks/useSocket"

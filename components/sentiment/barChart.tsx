@@ -3,9 +3,9 @@ import { Group } from '@visx/group'
 import { scaleBand, scaleLinear } from '@visx/scale'
 import { Bar } from '@visx/shape'
 import { useEffect, useMemo, useState } from 'react'
-import { SentimentData } from '../lib/types'
+import { SentimentData } from '../../lib/types'
 
-interface BarChart {
+type BarChartProps = {
   data: SentimentData,
   width: number,
   height: number,
@@ -20,13 +20,12 @@ const purple = '#a44afe'
 const getLabel = (d: BarData) => d[0]
 const getMention = (d: BarData) => d[1]
 
-const BarChart = (
-  {
-    data,
-    width,
-    height,
-    margin = { top: 20, right: 20, bottom: 50, left: 50 },
-  }: BarChart) => {
+const BarChart = ({
+  data,
+  width,
+  height,
+  margin = { top: 20, right: 20, bottom: 50, left: 50 },
+}: BarChartProps) => {
   const formattedData: [string, number][] = Object.entries(data)
 
   const [innerWidth, setInnerWIdth] = useState(0)
