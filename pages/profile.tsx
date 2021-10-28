@@ -4,6 +4,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { useFirestore, useFirestoreDocData, useUser } from 'reactfire'
+import CardWithNumber from '../components/cardWithNumber'
 import History from '../components/history'
 import Layout from '../components/layout'
 import PortfolioTable from '../components/portfolioTable'
@@ -50,33 +51,19 @@ const Profile: NextPage = () => {
           spacing={2}
         >
           <Grid item xs={12} sm={12} lg={6}>
-            <Card>
-              <CardContent>
-                <Typography gutterBottom variant="h6">
-                  Portfolio Value
-                </Typography>
-                <Typography variant="h4">
-                  {status === 'loading' && 'Loading...'}
-                  {status === 'success' && (value / 100).toFixed(2)}
-                  {status === 'error' && 'Failed to connect.'}
-                </Typography>
-              </CardContent>
-            </Card>
+            <CardWithNumber
+              status={status}
+              header="Portfolio Value"
+              number={value}
+            />
           </Grid>
 
           <Grid item xs={12} sm={12} lg={6}>
-            <Card>
-              <CardContent>
-                <Typography gutterBottom variant="h6">
-                  Cash
-                </Typography>
-                <Typography variant="h4">
-                  {status === 'loading' && 'Loading...'}
-                  {status === 'success' && (cash / 100).toFixed(2)}
-                  {status === 'error' && 'Failed to connect.'}
-                </Typography>
-              </CardContent>
-            </Card>
+            <CardWithNumber
+              status={status}
+              header="Cash"
+              number={cash}
+            />
           </Grid>
         </Grid>
 
@@ -84,11 +71,11 @@ const Profile: NextPage = () => {
           container item
           spacing={2}
         >
-          <Grid item xs={12} sm={12} lg={6}>
+          <Grid item xs={12}>
             <PortfolioTable />
           </Grid>
 
-          <Grid item xs={12} sm={12} lg={6}>
+          <Grid item xs={12}>
             <Card>
               <CardContent>
                 <Typography variant="h6">
