@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { tickers } from '../../lib/tickers'
 
-const SearchInput = () => {
+const SelectInput = () => {
   const [symbol, setSymbol] = useState('')
 
   const router = useRouter()
@@ -40,4 +40,4 @@ const SearchInput = () => {
   )
 }
 
-export default SearchInput
+export default SelectInput

@@ -3,7 +3,7 @@ import { AppBar, Box, Button, Grid, Toolbar } from '@mui/material'
 import { useSigninCheck } from 'reactfire'
 import { signout } from '../../lib/firebase'
 import Link from '../link'
-import SelectInput from './selectInput'
+import SearchInput from './searchInput'
 
 const Navbar = () => {
   const { data: signInCheckResult } = useSigninCheck()
@@ -27,7 +27,7 @@ const Navbar = () => {
         </Box>
 
         <Grid item xs={12} sm={12} md={6}>
-          <SelectInput />
+          <SearchInput />
         </Grid>
 
         <Box
