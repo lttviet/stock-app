@@ -32,11 +32,19 @@ const SignedInData = ({ ticker }: SignedInDataProps) => {
   )
 
   const buy = async () => {
-    await buyStockFunction({ ticker, price: Math.floor(quote.price * 100) })
+    try {
+      await buyStockFunction({ ticker, price: Math.floor(quote.price * 100) })
+    } catch (e: any) {
+      console.error(e.message)
+    }
   }
 
   const sell = async () => {
-    await sellStockFunction({ ticker, price: Math.floor(quote.price * 100) })
+    try {
+      await sellStockFunction({ ticker, price: Math.floor(quote.price * 100) })
+    } catch (e: any) {
+      console.error(e.message)
+    }
   }
 
   return (

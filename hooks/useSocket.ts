@@ -21,9 +21,10 @@ function createQuote(s: string): Quote | null {
   }
 }
 
+const initialQuote: Quote = { symbol: '', price: 0 }
 
 export default function useSocket(symbol: string) {
-  const [quote, setQuote] = useState<Quote>({ symbol: '', price: 0 })
+  const [quote, setQuote] = useState<Quote>(initialQuote)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const socket = useRef<WebSocket | null>(null)
@@ -35,6 +36,7 @@ export default function useSocket(symbol: string) {
 
     socket.current.onopen = () => setLoading(false)
     socket.current.onerror = () => {
+      setQuote(initialQuote)
       setLoading(false)
       setError(true)
     }
@@ -51,6 +53,8 @@ export default function useSocket(symbol: string) {
   }, [url])
 
   useEffect(() => {
+    setQuote(initialQuote)
+
     if (!socket.current) return
 
     if (socket.current.readyState === 0) {
@@ -67,6 +71,7 @@ export default function useSocket(symbol: string) {
     }
 
     return () => {
+      setQuote(initialQuote)
       if (socket.current?.readyState === 1) {
         socket.current?.send(
           JSON.stringify({ 'type': 'unsubscribe', 'symbol': symbol })
