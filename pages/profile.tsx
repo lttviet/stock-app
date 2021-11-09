@@ -1,14 +1,15 @@
 import { Card, CardContent, Grid, LinearProgress, Typography } from '@mui/material'
-import { doc } from 'firebase/firestore'
+import { collection, doc, query } from 'firebase/firestore'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import { useFirestore, useFirestoreDocData, useUser } from 'reactfire'
+import { useFirestore, useFirestoreCollectionData, useFirestoreDocData, useUser } from 'reactfire'
 import CardWithNumber from '../components/cardWithNumber'
 import History from '../components/history'
 import Layout from '../components/layout'
 import PortfolioTable from '../components/portfolioTable'
 import useRequireSignedIn from '../hooks/useRequireSignedIn'
+import { Stock } from '../lib/types'
 
 const WrappedProfile: NextPage = () => {
   const { show } = useRequireSignedIn('/login')
@@ -27,6 +28,13 @@ const Profile: NextPage = () => {
   const userRef = doc(useFirestore(), `users/${user?.uid}`)
   const { status, data } = useFirestoreDocData(userRef)
 
+
+  const portfolioRef = collection(useFirestore(), `users/${user?.uid}/portfolio`)
+  const { status: portfolioStatus, data: portfolio } = useFirestoreCollectionData(
+    query(portfolioRef),
+    { idField: 'symbol' }
+  )
+
   useEffect(() => {
     if (status === 'success') {
       setValue(data.value || 0)
@@ -34,6 +42,12 @@ const Profile: NextPage = () => {
       setLogs(data.history || [])
     }
   }, [status, data])
+
+  useEffect(() => {
+    if (portfolioStatus === 'success') {
+      console.log(portfolio)
+    }
+  }, [portfolioStatus, portfolio])
 
   return (
     <Layout>
@@ -72,7 +86,12 @@ const Profile: NextPage = () => {
           spacing={2}
         >
           <Grid item xs={12}>
-            <PortfolioTable />
+            {portfolioStatus === 'loading' && <LinearProgress />}
+            {portfolioStatus === 'error' && 'Failed to get'}
+            {portfolioStatus === 'success' &&
+              <PortfolioTable portfolio={portfolio as Stock[]} />
+            }
+
           </Grid>
 
           <Grid item xs={12}>

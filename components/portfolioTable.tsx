@@ -1,22 +1,12 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import { Stock } from '../lib/types'
 import Link from './link'
 
-const stocks = [
-  {
-    symbol: "AAPL",
-    quantity: 23,
-    averageCost: 12.11,
-    currentPrice: 123.33
-  },
-  {
-    symbol: "TSLA",
-    quantity: 12,
-    averageCost: 3,
-    currentPrice: 4.5
-  }
-]
+interface PortfolioTableProps {
+  portfolio: Stock[],
+}
 
-const PortfolioTable = () => {
+const PortfolioTable = ({ portfolio }: PortfolioTableProps) => {
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -31,14 +21,20 @@ const PortfolioTable = () => {
         </TableHead>
 
         <TableBody>
-          {stocks.map((s) => (
+          {portfolio.map((s) => (
             <TableRow key={s.symbol}>
               <TableCell>
                 <Link href={`/stocks/${s.symbol}`}>{s.symbol}</Link>
               </TableCell>
-              <TableCell align="right">{s.quantity}</TableCell>
-              <TableCell align="right">{s.averageCost}</TableCell>
-              <TableCell align="right">{s.currentPrice}</TableCell>
+              <TableCell align="right">
+                {s.quantity}
+              </TableCell>
+              <TableCell align="right">
+                {(s.averageCost / 100).toFixed(2)}
+              </TableCell>
+              <TableCell align="right">
+                0
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

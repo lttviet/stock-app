@@ -7,3 +7,9 @@ export interface SentimentData {
   positive: number,
   negative: number,
 }
+
+export interface Stock {
+  symbol: string,
+  quantity: number,
+  averageCost: number,
+}
