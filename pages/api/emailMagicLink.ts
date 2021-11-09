@@ -13,7 +13,7 @@ type QuoteResponse = {
 }
 
 const actionCodeSettings = {
-  url: 'http://localhost:3000/emailLogin',
+  url: process.env.EMAIL_LOGIN_URL || 'http://localhost:3000/emailLogin',
   handleCodeInApp: true
 }
 
