@@ -1,10 +1,11 @@
-import { Box, Button, Grid, LinearProgress, Tooltip, Typography } from "@mui/material"
+import { httpsCallable } from "@firebase/functions"
+import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material"
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from "next"
-import { useSigninCheck } from 'reactfire'
+import { useFunctions, useSigninCheck } from 'reactfire'
 import Layout from "../../components/layout"
-import MonthlyChart from "../../components/stockPriceGraph"
 import Price from "../../components/price"
 import Sentiment from "../../components/sentiment"
+import MonthlyChart from "../../components/stockPriceGraph"
 import useSocket from "../../hooks/useSocket"
 import useUserData from "../../hooks/useUserData"
 import useUserStock from "../../hooks/useUserStock"
@@ -14,9 +15,29 @@ interface SignedInDataProps {
   ticker: string
 }
 
+// TODO refactor
 const SignedInData = ({ ticker }: SignedInDataProps) => {
   const { data: userData } = useUserData()
   const { data: userStockData } = useUserStock(ticker)
+  const { quote, loading, error } = useSocket(ticker)
+
+  const functions = useFunctions()
+  const buyStockFunction = httpsCallable<{ ticker: string, price: number }, undefined>(
+    functions,
+    'buyStock',
+  )
+  const sellStockFunction = httpsCallable<{ ticker: string, price: number }, undefined>(
+    functions,
+    'sellStock',
+  )
+
+  const buy = async () => {
+    await buyStockFunction({ ticker, price: quote.price })
+  }
+
+  const sell = async () => {
+    await sellStockFunction({ ticker, price: quote.price })
+  }
 
   return (
     <>
@@ -30,6 +51,19 @@ const SignedInData = ({ ticker }: SignedInDataProps) => {
           <Typography variant="body1">Average cost: ${(userStockData.cost / (userStockData.quantity * 100)).toFixed(2) || 0}</Typography>
         </>
       )}
+
+      {loading && <LinearProgress />}
+      {error && <Typography variant="h4">Failed to get data</Typography>}
+
+      {!loading && !error && (
+        <>
+          <Price ticker={ticker} quote={quote} />
+        </>
+      )}
+
+      <Button variant="contained" onClick={buy}>Buy</Button>
+
+      <Button variant="contained" onClick={sell}>Sell</Button>
     </>
   )
 }
@@ -39,17 +73,6 @@ const Stock: NextPage = (
   { ticker }: InferGetStaticPropsType<typeof getStaticProps>
 ) => {
   const { data: signInCheckResult } = useSigninCheck()
-  const { quote, loading, error } = useSocket(ticker)
-
-  const buy = () => {
-    // TODO implement
-    return
-  }
-
-  const sell = () => {
-    // TODO implement
-    return
-  }
 
   return (
     <Layout>
@@ -66,23 +89,6 @@ const Stock: NextPage = (
       </div>
 
       {signInCheckResult?.signedIn && <SignedInData ticker={ticker} />}
-
-      {loading && <LinearProgress />}
-      {error && <Typography variant="h4">Failed to get data</Typography>}
-
-      {!loading && !error && (
-        <>
-          <Price ticker={ticker} quote={quote} />
-        </>
-      )}
-
-      <Tooltip title="not working" arrow>
-        <Button variant="contained" onClick={buy}>Buy</Button>
-      </Tooltip>
-
-      <Tooltip title="not working" arrow>
-        <Button variant="contained" onClick={sell}>Sell</Button>
-      </Tooltip>
     </Layout>
   )
 }

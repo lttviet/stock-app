@@ -28,7 +28,6 @@ const Profile: NextPage = () => {
   const userRef = doc(useFirestore(), `users/${user?.uid}`)
   const { status, data } = useFirestoreDocData(userRef)
 
-
   const portfolioRef = collection(useFirestore(), `users/${user?.uid}/portfolio`)
   const { status: portfolioStatus, data: portfolio } = useFirestoreCollectionData(
     query(portfolioRef),
@@ -42,12 +41,6 @@ const Profile: NextPage = () => {
       setLogs(data.history || [])
     }
   }, [status, data])
-
-  useEffect(() => {
-    if (portfolioStatus === 'success') {
-      console.log(portfolio)
-    }
-  }, [portfolioStatus, portfolio])
 
   return (
     <Layout>

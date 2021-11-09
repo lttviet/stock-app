@@ -1,6 +1,7 @@
+import { getFunctions } from '@firebase/functions';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import { AuthProvider, FirestoreProvider, useFirebaseApp } from 'reactfire';
+import { AuthProvider, FirestoreProvider, FunctionsProvider, useFirebaseApp } from 'reactfire';
 
 interface Props {
   children: React.ReactNode
@@ -11,11 +12,14 @@ const FirebaseProvider = ({ children }: Props) => {
 
   const auth = getAuth(app)
   const firestore = getFirestore(app)
+  const functions = getFunctions(app)
 
   return (
     <AuthProvider sdk={auth}>
       <FirestoreProvider sdk={firestore}>
-        {children}
+        <FunctionsProvider sdk={functions}>
+          {children}
+        </FunctionsProvider>
       </FirestoreProvider>
     </AuthProvider>
   )
