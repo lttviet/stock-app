@@ -1,7 +1,7 @@
-import { getFunctions } from '@firebase/functions';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { AuthProvider, FirestoreProvider, FunctionsProvider, useFirebaseApp } from 'reactfire';
+import { getFunctions } from 'firebase/functions'
+import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
+import { AuthProvider, FirestoreProvider, FunctionsProvider, useFirebaseApp } from 'reactfire'
 
 interface Props {
   children: React.ReactNode
