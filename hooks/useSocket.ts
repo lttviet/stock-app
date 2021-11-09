@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 
 export interface Quote {
   symbol: string
-  price: number,
+  price: number
 }
 
 function createQuote(s: string): Quote | null {

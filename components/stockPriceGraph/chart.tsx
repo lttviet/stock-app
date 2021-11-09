@@ -6,15 +6,10 @@ import { Bar, Circle, Line, LinePath } from '@visx/shape'
 import { Tooltip, useTooltip } from "@visx/tooltip"
 import { bisector, extent } from 'd3-array'
 import { timeFormat } from 'd3-time-format'
-import React, { useCallback, useEffect, useMemo, useState } from "react"
-import { StockData } from "../../lib/types"
+import React, { useCallback, useMemo } from "react"
+import { Dimension, StockData } from "../../lib/types"
 
-interface ChartProps {
-  data: StockData[],
-  width: number,
-  height: number,
-  margin?: { top: number, right: number, bottom: number, left: number }
-}
+type ChartProps = { data: StockData[] } & Dimension
 
 const formatDate = timeFormat("%b %d, '%y")
 
@@ -23,15 +18,12 @@ const getDate = (d: StockData) => new Date(d.date)
 const getStockValue = (d: StockData) => d.close
 const bisectDate = bisector<StockData, Date>((d) => new Date(d.date)).left
 
-const Chart = (
-  { data,
-    width,
-    height,
-    margin = { top: 0, right: 0, bottom: 0, left: 0 },
-  }: ChartProps) => {
-  const [colour, setColour] = useState('red')
-  const [innerWidth, setInnerWIdth] = useState(0)
-  const [innerHeight, setInnerHeight] = useState(0)
+const Chart = ({ data, width, height, margin = { top: 0, right: 0, bottom: 0, left: 0 } }: ChartProps) => {
+  const innerWidth = width - margin.right - margin.left
+  const innerHeight = height - margin.top - margin.bottom
+  const colour = (
+    (data.length > 1) && (data[0].close >= data[data.length - 1].close)
+  ) ? 'red' : 'green'
 
   const {
     showTooltip,
@@ -41,37 +33,21 @@ const Chart = (
     tooltipLeft = 0
   } = useTooltip<StockData>()
 
-  useEffect(() => {
-    if (data.length > 1 && data[0].close >= data[data.length - 1].close) {
-      setColour('red')
-    } else {
-      setColour('green')
-    }
-  }, [data])
-
-  useEffect(() => {
-    // bounds
-    setInnerWIdth(width - margin.right - margin.left)
-    setInnerHeight(height - margin.top - margin.bottom)
-  }, [width, height, margin])
-
   // scales
-  const dateScale = useMemo(
-    () =>
-      scaleTime({
-        range: [0, innerWidth],
-        domain: extent(data, getDate) as [Date, Date],
-      }),
-    [innerWidth, data])
+  const dateScale = useMemo(() => {
+    return scaleTime({
+      range: [0, innerWidth],
+      domain: extent(data, getDate) as [Date, Date],
+    })
+  }, [innerWidth, data])
 
-  const stockValueScale = useMemo(
-    () =>
-      scaleLinear({
-        range: [innerHeight, 0],
-        domain: extent(data, getStockValue) as [number, number],
-        nice: true
-      }),
-    [innerHeight, data])
+  const stockValueScale = useMemo(() => {
+    return scaleLinear({
+      range: [innerHeight, 0],
+      domain: extent(data, getStockValue) as [number, number],
+      nice: true
+    })
+  }, [innerHeight, data])
 
   // tooltip
   const handleTooltip = useCallback(

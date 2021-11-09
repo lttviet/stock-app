@@ -2,15 +2,10 @@ import { AxisBottom, AxisLeft } from '@visx/axis'
 import { Group } from '@visx/group'
 import { scaleBand, scaleLinear } from '@visx/scale'
 import { Bar } from '@visx/shape'
-import { useEffect, useMemo, useState } from 'react'
-import { SentimentData } from '../../lib/types'
+import { useMemo } from 'react'
+import { Dimension, SentimentData } from '../../lib/types'
 
-type BarChartProps = {
-  data: SentimentData,
-  width: number,
-  height: number,
-  margin?: { top: number, right: number, bottom: number, left: number }
-}
+type BarChartProps = { data: SentimentData } & Dimension
 
 type BarData = [string, number]
 
@@ -20,43 +15,30 @@ const purple = '#a44afe'
 const getLabel = (d: BarData) => d[0]
 const getMention = (d: BarData) => d[1]
 
-const BarChart = ({
-  data,
-  width,
-  height,
-  margin = { top: 20, right: 20, bottom: 50, left: 50 },
-}: BarChartProps) => {
-  const formattedData: [string, number][] = Object.entries(data)
+const BarChart = ({ data, width, height, margin = { top: 20, right: 20, bottom: 50, left: 50 } }: BarChartProps) => {
+  const innerWidth = width - margin.right - margin.left
+  const innerHeight = height - margin.top - margin.bottom
 
-  const [innerWidth, setInnerWIdth] = useState(0)
-  const [innerHeight, setInnerHeight] = useState(0)
-
-  useEffect(() => {
-    // bounds
-    setInnerWIdth(width - margin.right - margin.left)
-    setInnerHeight(height - margin.top - margin.bottom)
-  }, [width, height, margin])
+  const formattedData: BarData[] = useMemo(() => {
+    return Object.entries(data)
+  }, [data])
 
   // scales
-  const xScale = useMemo(
-    () =>
-      scaleBand<string>({
-        range: [0, innerWidth],
-        domain: formattedData.map(getLabel),
-        padding: 0.3,
-      }),
-    [formattedData, innerWidth]
-  )
+  const xScale = useMemo(() => {
+    return scaleBand<string>({
+      range: [0, innerWidth],
+      domain: formattedData.map(getLabel),
+      padding: 0.3,
+    })
+  }, [formattedData, innerWidth])
 
-  const yScale = useMemo(
-    () =>
-      scaleLinear<number>({
-        range: [innerHeight, 0],
-        domain: [0, Math.max(...formattedData.map(getMention))],
-        nice: true,
-      }),
-    [formattedData, innerHeight],
-  )
+  const yScale = useMemo(() => {
+    return scaleLinear<number>({
+      range: [innerHeight, 0],
+      domain: [0, Math.max(...formattedData.map(getMention))],
+      nice: true,
+    })
+  }, [formattedData, innerHeight])
 
   return (
     <svg width={width} height={height}>

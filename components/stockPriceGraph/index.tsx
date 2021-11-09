@@ -4,8 +4,8 @@ import useCandle from '../../hooks/useCandle'
 import Chart from './chart'
 
 interface MonthlyChartProps {
-  height?: number,
-  ticker: string,
+  height?: number
+  ticker: string
 }
 
 const MonthlyChart = ({ height = 400, ticker }: MonthlyChartProps) => {

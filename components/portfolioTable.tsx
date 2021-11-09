@@ -3,7 +3,7 @@ import { Stock } from '../lib/types'
 import Link from './link'
 
 interface PortfolioTableProps {
-  portfolio: Stock[],
+  portfolio: Stock[]
 }
 
 const PortfolioTable = ({ portfolio }: PortfolioTableProps) => {

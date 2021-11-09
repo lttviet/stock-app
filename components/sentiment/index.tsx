@@ -4,7 +4,7 @@ import useSentiment from '../../hooks/useSentiment'
 import BarChart from "./barChart"
 
 interface SentimentProps {
-  height?: number,
+  height?: number
   ticker: string
 }
 

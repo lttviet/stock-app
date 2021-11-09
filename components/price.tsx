@@ -2,7 +2,7 @@ import { Button, Grid, Typography } from '@mui/material'
 import useSocket, { Quote } from '../hooks/useSocket'
 
 interface PriceProps {
-  ticker: string,
+  ticker: string
   quote: Quote
 }
 

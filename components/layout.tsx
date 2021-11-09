@@ -1,4 +1,5 @@
-import { Box, Toolbar } from '@mui/material'
+import { Autocomplete, Box, TextField, Toolbar } from '@mui/material'
+import { tickers } from '../lib/tickers'
 import Navbar from './navbar'
 
 interface Props {
@@ -7,14 +8,14 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <Box sx={{ display: 'flex' }}>
+    <>
       <Navbar />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3, overflow: "hidden" }}>
+      <Box component="main" sx={{ p: 3, overflow: "hidden" }}>
         <Toolbar />
         {children}
       </Box>
-    </Box>
+    </>
   )
 }
 
