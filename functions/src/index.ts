@@ -22,6 +22,13 @@ export const setupNewUser = functions.auth.user().onCreate(async (user) => {
 export const buyStock = functions.https.onCall(async (data, context) => {
   const { ticker, price } = data
 
+  if (context.app === undefined) {
+    throw new functions.https.HttpsError(
+      'failed-precondition',
+      'The function must be called from an App Check verified app.'
+    )
+  }
+
   if (!(typeof ticker === 'string') || ticker.length === 0) {
     throw new functions.https.HttpsError(
       'invalid-argument',
@@ -84,6 +91,13 @@ export const buyStock = functions.https.onCall(async (data, context) => {
 
 export const sellStock = functions.https.onCall(async (data, context) => {
   const { ticker, price } = data
+
+  if (context.app === undefined) {
+    throw new functions.https.HttpsError(
+      'failed-precondition',
+      'The function must be called from an App Check verified app.'
+    )
+  }
 
   if (!(typeof ticker === 'string') || ticker.length === 0) {
     throw new functions.https.HttpsError(
