@@ -1,16 +1,14 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
+import usePortfolio from '../hooks/usePortfolio'
 import { Stock } from '../lib/types'
 import Link from './link'
 
-interface PortfolioTableProps {
-  portfolio: Stock[]
-}
+const PortfolioTable = () => {
+  const { portfolio } = usePortfolio()
 
-const PortfolioTable = ({ portfolio }: PortfolioTableProps) => {
   return (
     <TableContainer component={Paper}>
       <Table>
-
         <TableHead>
           <TableRow>
             <TableCell>Stock</TableCell>
@@ -21,7 +19,7 @@ const PortfolioTable = ({ portfolio }: PortfolioTableProps) => {
         </TableHead>
 
         <TableBody>
-          {portfolio.map((s) => (
+          {(portfolio as Stock[]).map((s) => (
             <TableRow key={s.symbol}>
               <TableCell>
                 <Link href={`/stocks/${s.symbol}`}>{s.symbol}</Link>

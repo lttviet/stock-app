@@ -41,30 +41,45 @@ export default function useSocket(symbol: string) {
       setError(true)
     }
 
-    socket.current.addEventListener('message', (event) => {
-      const quote = createQuote(event.data)
-      if (quote) setQuote(quote)
-    })
-
-
     return () => {
-      socket.current?.close()
+      setQuote(initialQuote)
+
+      if (socket.current?.readyState === 1) {
+        socket.current?.close()
+      }
     }
   }, [url])
 
   useEffect(() => {
     setQuote(initialQuote)
 
-    if (!socket.current) return
+    if (socket.current === null) return
 
-    if (socket.current.readyState === 0) {
-      socket.current.addEventListener('open', () =>
-        socket.current?.send(
-          JSON.stringify({ 'type': 'subscribe', 'symbol': symbol })
-        )
-      )
+    socket.current.addEventListener('message', (event) => {
+      const quote = createQuote(event.data)
+      if (quote) setQuote(quote)
+    })
+
+    if (socket.current.readyState !== 1) {
+      socket.current.addEventListener('open', () => {
+        try {
+          socket.current?.send(
+            JSON.stringify({ 'type': 'subscribe', 'symbol': symbol })
+          )
+        } catch (e: any) {
+          if (e instanceof DOMException && e.code === DOMException.INVALID_STATE_ERR) {
+            console.log(
+              'React strict mode renders twice in dev, socket.current is stale.',
+              'Looking for solution'
+            )
+          } else {
+            throw e
+          }
+        }
+      })
     }
-    else if (socket.current.readyState === 1) {
+
+    if (socket.current.readyState === 1) {
       socket.current.send(
         JSON.stringify({ 'type': 'subscribe', 'symbol': symbol })
       )
@@ -72,6 +87,7 @@ export default function useSocket(symbol: string) {
 
     return () => {
       setQuote(initialQuote)
+
       if (socket.current?.readyState === 1) {
         socket.current?.send(
           JSON.stringify({ 'type': 'unsubscribe', 'symbol': symbol })

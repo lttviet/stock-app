@@ -1,4 +1,4 @@
-import { LinearProgress, Typography } from '@mui/material'
+import { Typography } from "@mui/material"
 import { ParentSize } from '@visx/responsive'
 import useCandle from '../../hooks/useCandle'
 import Chart from './chart'
@@ -9,22 +9,22 @@ interface MonthlyChartProps {
 }
 
 const MonthlyChart = ({ height = 400, ticker }: MonthlyChartProps) => {
-  const { data, loading, error } = useCandle(ticker as string)
+  const { data } = useCandle(ticker as string)
+
+  if (!data || data.length < 1) {
+    return (
+      <Typography variant="h4">
+        Failed to get data
+      </Typography>
+    )
+  }
 
   return (
-    <>
-      {error && <Typography variant="h4">Failed to get data</Typography>}
-      {loading && <LinearProgress />}
-      <div>
-        {!error && !loading && (
-          <ParentSize>
-            {({ width }) => (
-              <Chart data={data} width={width} height={height} />
-            )}
-          </ParentSize>
-        )}
-      </div>
-    </>
+    <ParentSize>
+      {({ width }) => (
+        <Chart data={data} width={width} height={height} />
+      )}
+    </ParentSize>
   )
 }
 

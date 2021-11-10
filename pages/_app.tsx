@@ -4,7 +4,7 @@ import { createTheme, CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import type { AppProps } from 'next/app'
 import { FirebaseAppProvider } from 'reactfire'
-import FirebaseProvider from '../components/firebaseProvider'
+import FirebaseWrapper from '../components/firebaseWrapper'
 import firebaseApp from '../lib/firebase'
 
 // https://github.com/mui-org/material-ui/blob/master/examples/nextjs-with-typescript/pages/_app.tsx
@@ -28,10 +28,10 @@ const MyApp = (props: MyAppProps) => {
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <FirebaseAppProvider firebaseApp={firebaseApp}>
-          <FirebaseProvider>
+        <FirebaseAppProvider firebaseApp={firebaseApp} suspense>
+          <FirebaseWrapper>
             <Component {...pageProps} />
-          </FirebaseProvider>
+          </FirebaseWrapper>
         </FirebaseAppProvider>
       </ThemeProvider>
     </CacheProvider>

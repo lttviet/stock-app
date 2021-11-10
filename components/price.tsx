@@ -1,5 +1,5 @@
-import { Button, Grid, Typography } from '@mui/material'
-import useSocket, { Quote } from '../hooks/useSocket'
+import { Typography } from '@mui/material'
+import { Quote } from '../hooks/useSocket'
 
 interface PriceProps {
   ticker: string

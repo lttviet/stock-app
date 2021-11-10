@@ -1,14 +1,13 @@
 import { httpsCallable } from "@firebase/functions"
-import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material"
+import { Box, Button, CircularProgress, Grid, LinearProgress, Typography } from "@mui/material"
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from "next"
-import { useFunctions, useSigninCheck } from 'reactfire'
+import { SuspenseWithPerf, useFunctions, useSigninCheck } from 'reactfire'
 import Layout from "../../components/layout"
 import Price from "../../components/price"
+import CashCard from "../../components/profile/cashCard"
 import Sentiment from "../../components/sentiment"
 import MonthlyChart from "../../components/stockPriceGraph"
 import useSocket from "../../hooks/useSocket"
-import useUserData from "../../hooks/useUserData"
-import useUserStock from "../../hooks/useUserStock"
 import { tickers } from "../../lib/tickers"
 
 interface SignedInDataProps {
@@ -17,8 +16,6 @@ interface SignedInDataProps {
 
 // TODO refactor
 const SignedInData = ({ ticker }: SignedInDataProps) => {
-  const { data: userData } = useUserData()
-  const { data: userStockData } = useUserStock(ticker)
   const { quote, loading, error } = useSocket(ticker)
 
   const functions = useFunctions()
@@ -49,24 +46,17 @@ const SignedInData = ({ ticker }: SignedInDataProps) => {
 
   return (
     <>
-      {userData && (
-        <Typography variant="body1">Cash: ${(userData.cash / 100).toFixed(2)}</Typography>
-      )}
-
-      {userStockData && (
-        <>
-          <Typography variant="body1">Your shares: {userStockData.quantity || 0}</Typography>
-          <Typography variant="body1">Average cost: ${(userStockData.cost / (userStockData.quantity * 100)).toFixed(2) || 0}</Typography>
-        </>
-      )}
+      <SuspenseWithPerf
+        fallback={<LinearProgress />}
+        traceId="load-firestore-user-doc">
+        <CashCard />
+      </SuspenseWithPerf>
 
       {loading && <LinearProgress />}
       {error && <Typography variant="h4">Failed to get data</Typography>}
 
       {!loading && !error && (
-        <>
-          <Price ticker={ticker} quote={quote} />
-        </>
+        <Price ticker={ticker} quote={quote} />
       )}
 
       <Button variant="contained" onClick={buy}>Buy</Button>
@@ -77,14 +67,17 @@ const SignedInData = ({ ticker }: SignedInDataProps) => {
 }
 
 // refactor
-const Stock: NextPage = (
-  { ticker }: InferGetStaticPropsType<typeof getStaticProps>
-) => {
+const Stock: NextPage = ({ ticker }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { data: signInCheckResult } = useSigninCheck()
 
   return (
     <Layout>
-      <MonthlyChart height={400} ticker={ticker} />
+      <SuspenseWithPerf
+        fallback={<LinearProgress />}
+        traceId="load-monthly-price"
+      >
+        <MonthlyChart height={400} ticker={ticker} />
+      </SuspenseWithPerf>
 
       <div>
         <Typography variant="body1">
@@ -92,11 +85,16 @@ const Stock: NextPage = (
         </Typography>
 
         <Box component={Grid} item xs={12} sm={9} md={4}>
-          <Sentiment height={400} ticker={ticker} />
+          <SuspenseWithPerf
+            fallback={<CircularProgress />}
+            traceId="load-monthly-sentiment"
+          >
+            <Sentiment height={400} ticker={ticker} />
+          </SuspenseWithPerf>
         </Box>
       </div>
 
-      {signInCheckResult?.signedIn && <SignedInData ticker={ticker} />}
+      {signInCheckResult.signedIn && <SignedInData ticker={ticker} />}
     </Layout>
   )
 }
