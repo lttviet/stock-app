@@ -1,7 +1,8 @@
 import { httpsCallable } from "@firebase/functions"
 import { Box, Button, CircularProgress, Grid, LinearProgress, Typography } from "@mui/material"
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType, NextPage } from "next"
-import { SuspenseWithPerf, useFunctions, useSigninCheck } from 'reactfire'
+import { Suspense } from "react"
+import { useFunctions, useSigninCheck } from 'reactfire'
 import Layout from "../../components/layout"
 import Price from "../../components/price"
 import CashCard from "../../components/profile/cashCard"
@@ -46,11 +47,9 @@ const SignedInData = ({ ticker }: SignedInDataProps) => {
 
   return (
     <>
-      <SuspenseWithPerf
-        fallback={<LinearProgress />}
-        traceId="load-firestore-user-doc">
+      <Suspense fallback={<LinearProgress />}>
         <CashCard />
-      </SuspenseWithPerf>
+      </Suspense>
 
       {loading && <LinearProgress />}
       {error && <Typography variant="h4">Failed to get data</Typography>}
@@ -72,12 +71,9 @@ const Stock: NextPage = ({ ticker }: InferGetStaticPropsType<typeof getStaticPro
 
   return (
     <Layout>
-      <SuspenseWithPerf
-        fallback={<LinearProgress />}
-        traceId="load-monthly-price"
-      >
+      <Suspense fallback={<LinearProgress />}>
         <MonthlyChart height={400} ticker={ticker} />
-      </SuspenseWithPerf>
+      </Suspense>
 
       <div>
         <Typography variant="body1">
@@ -85,12 +81,9 @@ const Stock: NextPage = ({ ticker }: InferGetStaticPropsType<typeof getStaticPro
         </Typography>
 
         <Box component={Grid} item xs={12} sm={9} md={4}>
-          <SuspenseWithPerf
-            fallback={<CircularProgress />}
-            traceId="load-monthly-sentiment"
-          >
+          <Suspense fallback={<CircularProgress />}>
             <Sentiment height={400} ticker={ticker} />
-          </SuspenseWithPerf>
+          </Suspense>
         </Box>
       </div>
 

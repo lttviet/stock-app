@@ -1,7 +1,7 @@
 import { Grid, LinearProgress } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { SuspenseWithPerf } from 'reactfire'
+import { Suspense } from 'react'
 import Layout from '../components/layout'
 import PortfolioTable from '../components/portfolioTable'
 import CashCard from '../components/profile/cashCard'
@@ -37,12 +37,9 @@ const Profile: NextPage = () => {
           </Grid>
 
           <Grid item xs={12} sm={12} lg={6}>
-            <SuspenseWithPerf
-              fallback={<LinearProgress />}
-              traceId="load-firestore-user-doc"
-            >
+            <Suspense fallback={<LinearProgress />}>
               <CashCard />
-            </SuspenseWithPerf>
+            </Suspense>
           </Grid>
         </Grid>
 
@@ -51,12 +48,9 @@ const Profile: NextPage = () => {
           spacing={2}
         >
           <Grid item xs={12}>
-            <SuspenseWithPerf
-              fallback={<LinearProgress />}
-              traceId="load-firestore-portfolio-collection"
-            >
+            <Suspense fallback={<LinearProgress />}>
               <PortfolioTable />
-            </SuspenseWithPerf>
+            </Suspense>
           </Grid>
 
           <Grid item xs={12}>

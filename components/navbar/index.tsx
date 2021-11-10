@@ -1,6 +1,6 @@
 import { ShowChart } from '@mui/icons-material'
 import { AppBar, Box, Button, CircularProgress, Grid, Toolbar } from '@mui/material'
-import { SuspenseWithPerf } from 'reactfire'
+import { Suspense } from 'react'
 import Link from '../link'
 import AuthSection from './authSection'
 import SearchInput from './searchInput'
@@ -33,12 +33,9 @@ const Navbar = () => {
           item
           display={{ xs: "none", sm: "none", md: "block" }}
         >
-          <SuspenseWithPerf
-            fallback={<CircularProgress />}
-            traceId="load-auth"
-          >
+          <Suspense fallback={<CircularProgress />}>
             <AuthSection />
-          </SuspenseWithPerf>
+          </Suspense>
         </Box>
       </Toolbar>
     </AppBar >

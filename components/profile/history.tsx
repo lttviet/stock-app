@@ -1,5 +1,5 @@
 import { Card, CardContent, LinearProgress, List, ListItem, ListItemText, Typography } from '@mui/material'
-import { SuspenseWithPerf } from 'reactfire'
+import { Suspense } from 'react'
 import useUserDetails from '../../hooks/useUserDetails'
 
 const LogList = () => {
@@ -28,12 +28,9 @@ const History = () => {
           History
         </Typography>
 
-        <SuspenseWithPerf
-          fallback={<LinearProgress />}
-          traceId="load-firestore-user-doc"
-        >
+        <Suspense fallback={<LinearProgress />}>
           <LogList />
-        </SuspenseWithPerf>
+        </Suspense>
       </CardContent>
     </Card>
   )

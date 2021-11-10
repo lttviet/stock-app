@@ -3,10 +3,10 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 import { createTheme, CssBaseline, LinearProgress } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 import type { AppProps } from 'next/app'
-import { FirebaseAppProvider, SuspenseWithPerf } from 'reactfire'
+import { Suspense } from 'react'
+import { FirebaseAppProvider } from 'reactfire'
 import FirebaseWrapper from '../components/firebaseWrapper'
 import firebaseApp from '../lib/firebase'
-import { Suspense } from 'react'
 
 // https://github.com/mui-org/material-ui/blob/master/examples/nextjs-with-typescript/pages/_app.tsx
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -30,10 +30,7 @@ const MyApp = (props: MyAppProps) => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <FirebaseAppProvider firebaseApp={firebaseApp} suspense>
-          <Suspense
-            fallback={<LinearProgress />}
-          // traceId="load-firebase-root"
-          >
+          <Suspense fallback={<LinearProgress />}>
             <FirebaseWrapper>
               <Component {...pageProps} />
             </FirebaseWrapper>
