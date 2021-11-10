@@ -1,10 +1,10 @@
 import { Button } from '@mui/material'
-import { useSigninCheck } from 'reactfire'
-import { signout } from '../../lib/firebase'
+import { useAuth, useSigninCheck } from 'reactfire'
 import Link from '../link'
 
 const AuthSection = () => {
   const { data: signInCheckResult } = useSigninCheck()
+  const auth = useAuth()
 
   if (signInCheckResult.signedIn) {
     return (
@@ -13,7 +13,7 @@ const AuthSection = () => {
           Profile
         </Button>
 
-        <Button variant="outlined" onClick={() => signout()}>
+        <Button variant="outlined" onClick={() => auth.signOut()}>
           Sign out
         </Button>
       </>

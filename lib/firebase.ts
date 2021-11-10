@@ -13,6 +13,4 @@ const firebaseConfig = {
 
 const firebaseApp = (getApps().length === 0) ? initializeApp(firebaseConfig) : getApp()
 
-export const signout = () => getAuth(firebaseApp).signOut()
-
 export default firebaseApp
