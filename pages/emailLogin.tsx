@@ -1,15 +1,15 @@
 import { Grid, Typography } from '@mui/material'
-import { getAuth, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth"
+import { getAdditionalUserInfo, isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth"
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import firebaseApp from '../lib/firebase'
+import { useAuth } from 'reactfire'
 
 const EmailLogin: NextPage = () => {
   const [error, setError] = useState(false)
 
   const router = useRouter()
-  const auth = getAuth(firebaseApp)
+  const auth = useAuth()
 
   useEffect(() => {
     const email = window.localStorage.getItem('email')
@@ -20,16 +20,25 @@ const EmailLogin: NextPage = () => {
       return
     }
 
-    if (isSignInWithEmailLink(auth, router.asPath)) {
+    if (router.isReady && isSignInWithEmailLink(auth, router.asPath)) {
       signInWithEmailLink(auth, email, router.asPath).then(
-        () => router.push('/profile'),
+        (userCred) => {
+          setError(false)
+          window.localStorage.removeItem('email')
+
+          if (getAdditionalUserInfo(userCred)?.isNewUser) {
+            router.push('/newUser')
+          } else {
+            router.push('/profile')
+          }
+        },
         (e) => {
-          console.error(e)
+          console.error(e.message)
           setError(true)
         }
       )
     }
-  }, [router, auth])
+  }, [auth, router])
 
 
   return (

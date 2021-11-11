@@ -23,7 +23,7 @@ interface MyAppProps extends AppProps {
 }
 
 const MyApp = (props: MyAppProps) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
 
   return (
     <CacheProvider value={emotionCache}>

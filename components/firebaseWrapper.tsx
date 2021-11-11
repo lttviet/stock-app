@@ -2,7 +2,8 @@ import { initializeAppCheck, ReCaptchaV3Provider } from '@firebase/app-check'
 import { getAuth } from '@firebase/auth'
 import { getFirestore } from '@firebase/firestore'
 import { getFunctions } from '@firebase/functions'
-import { AppCheckProvider, AuthProvider, FirestoreProvider, FunctionsProvider, useFirebaseApp } from 'reactfire'
+import { useEffect } from 'react'
+import { AppCheckProvider, AuthProvider, FirestoreProvider, FunctionsProvider, useFirebaseApp, useInitAuth } from 'reactfire'
 
 interface Props {
   children: React.ReactNode
@@ -13,6 +14,7 @@ const FirebaseWrapper = ({ children }: Props) => {
   const app = useFirebaseApp()
 
   const auth = getAuth(app)
+
   const firestore = getFirestore(app)
   const functions = getFunctions(app)
 
