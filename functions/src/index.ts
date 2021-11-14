@@ -158,3 +158,34 @@ export const sellStock = functions.https.onCall(async (data, context) => {
     })
   })
 })
+
+export const createAverageCost = functions.firestore
+  .document('users/{uid}/portfolio/{ticker}')
+  .onCreate((snap) => {
+    const costs = snap.get('costs')
+
+    // 1 ele in costs when doc is created
+    // TODO the constraint may be changed later
+    const averageCost = (costs && costs.length === 1)
+      ? costs[0]
+      : 0
+
+    return snap.ref.update({ averageCost })
+  })
+
+export const updateAverageCost = functions.firestore
+  .document('users/{uid}/portfolio/{ticker}')
+  .onUpdate((change) => {
+    const data = change.after.data()
+    const prevData = change.before.data()
+
+    if (prevData.costs === data.costs) {
+      return
+    }
+
+    const averageCost = (data.costs.length > 0)
+      ? data.costs.reduce((a: number, b: number) => a + b) / data.costs.length
+      : 0
+
+    return change.after.ref.update({ averageCost })
+  })
