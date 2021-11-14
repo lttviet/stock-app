@@ -23,9 +23,9 @@
     "d3-array": "^3.1.1",
     "d3-time-format": "^4.0.0",
     "firebase": "^9.4.0",
-    "next": "^12.0.4-canary.3",
-    "react": "^18.0.0-alpha-327d5c484-20211106",
-    "react-dom": "^18.0.0-alpha-327d5c484-20211106",
+    "next": "^12.0.4-canary.11",
+    "react": "^18.0.0-alpha-cb11155c8-20211112",
+    "react-dom": "^18.0.0-alpha-cb11155c8-20211112",
     "reactfire": "^4.2.0",
     "swr": "^1.0.1",
     "validator": "^13.6.0"
